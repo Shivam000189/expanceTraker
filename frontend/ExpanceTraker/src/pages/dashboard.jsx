@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import ExpenseModal from "../components/ExpenseModal";
 
 export default function Dashboard() {
   const [fadeIn, setFadeIn] = useState(false);
@@ -17,8 +18,9 @@ export default function Dashboard() {
   const [editingId, setEditingId] = useState(null);
   const navigate = useNavigate();
   const formRef = useRef(null);
+  const [selectedExpense, setSelectedExpense] = useState(null);
 
-  // 🔹 Fetch all expenses on load
+  
   useEffect(() => {
     fetchExpenses();
   }, []);
@@ -38,12 +40,12 @@ export default function Dashboard() {
     }
   };
 
-  // 🔹 Handle form changes
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🔹 Add / Update expense
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -70,7 +72,7 @@ export default function Dashboard() {
     }
   };
 
-  // 🔹 Delete expense
+  
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -85,7 +87,7 @@ export default function Dashboard() {
     }
   };
 
-  // 🔹 Start editing
+  
   const startEdit = (exp) => {
     setEditingId(exp._id);
     setFormData({
@@ -98,14 +100,14 @@ export default function Dashboard() {
     setTimeout(() => setFadeIn(false), 300);
   };
 
-  // 🔹 Cancel editing
+  
   const cancelEdit = () => {
     setEditingId(null);
     setFormData({ title: "", amount: "", category: "", date: "" });
     toast("Edit cancelled.", { icon: "✖️" });
   };
 
-  // 🔹 Detect click outside to cancel edit
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target) && editingId) {
@@ -120,7 +122,7 @@ export default function Dashboard() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [editingId]);
 
-  // 🔹 Logout
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -143,7 +145,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* 🔹 Form */}
+      
       <form
         ref={formRef}
         onSubmit={handleSubmit}
@@ -207,7 +209,7 @@ export default function Dashboard() {
         ) : (
           <ul className="divide-y divide-quill-gray-400">
             {expenses.map((exp) => (
-              <li key={exp._id} className="py-3">
+              <li key={exp._id} className="py-3 px-3 hover:bg-gray-100 hover:rounded-lg  cursor-pointer transition"  onClick={() => setSelectedExpense(exp)}>
                 <div className="flex justify-between items-center">
                   <div>
                     <span className="font-semibold text-lg text-quill-gray-950">
@@ -241,10 +243,18 @@ export default function Dashboard() {
                   </div>
                 </div>
               </li>
+              
             ))}
           </ul>
         )}
+        
       </div>
+      {selectedExpense && (
+          <ExpenseModal                 
+            expense={selectedExpense}
+            onClose={() => setSelectedExpense(null)}   
+          />
+        )} 
     </div>
   );
 }
