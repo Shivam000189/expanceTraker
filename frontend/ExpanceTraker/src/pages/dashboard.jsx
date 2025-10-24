@@ -3,6 +3,8 @@ import API from "../api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import ExpenseModal from "../components/ExpenseModal";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ExpenseStats from "../components/ExpenseStats";
 
 export default function Dashboard() {
   const [fadeIn, setFadeIn] = useState(false);
@@ -129,7 +131,7 @@ export default function Dashboard() {
     toast.success("Logged out successfully!");
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <LoadingSpinner message="Fetching your expenses..." bgColor="bg-quill-gray-400"></LoadingSpinner>
 
   return (
     <div className="min-h-screen bg-quill-gray-400 p-6">
@@ -207,9 +209,14 @@ export default function Dashboard() {
         {expenses.length === 0 ? (
           <p className="istok-web-bold text-center">No expenses yet.</p>
         ) : (
-          <ul className="divide-y divide-quill-gray-400">
+          <ul className=" divide-quill-gray-400">
             {expenses.map((exp) => (
-              <li key={exp._id} className="py-3 px-3 hover:bg-gray-100 hover:rounded-lg  cursor-pointer transition"  onClick={() => setSelectedExpense(exp)}>
+              <li key={exp._id}   
+              className={`py-3 px-3 rounded-lg transition cursor-pointer ${selectedExpense?._id === exp._id 
+                ? "bg-quill-gray-300  ring-2 ring-blue-500 scale-[1.02]"
+                : "hover:bg-gray-100"
+              }`}
+              onClick={() => setSelectedExpense(exp)}>
                 <div className="flex justify-between items-center">
                   <div>
                     <span className="font-semibold text-lg text-quill-gray-950">
@@ -227,18 +234,25 @@ export default function Dashboard() {
                     </span>
 
                     <button
-                      onClick={() => startEdit(exp)}
-                      className="text-green-600 hover:text-green-950 font-bold text-xl"
-                      title="Edit"
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      onClick={() => handleDelete(exp._id)}
-                      className="text-red-500 hover:text-red-700 font-bold text-xl"
-                      title="Delete"
-                    >
-                      ✕
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          startEdit(exp);
+                        }}
+                        className="text-green-600 hover:text-green-950 font-bold text-xl"
+                        title="Edit"
+                      >
+                        ✏️
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          handleDelete(exp._id);
+                        }}
+                        className="text-red-500 hover:text-red-700 font-bold text-xl"
+                        title="Delete"
+                      >
+                        ✕
                     </button>
                   </div>
                 </div>
@@ -254,7 +268,8 @@ export default function Dashboard() {
             expense={selectedExpense}
             onClose={() => setSelectedExpense(null)}   
           />
-        )} 
+        )}
+        <ExpenseStats expenses={expenses} />
     </div>
   );
 }
