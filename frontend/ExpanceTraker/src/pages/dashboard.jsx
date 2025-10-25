@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import ExpenseModal from "../components/ExpenseModal";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ExpenseStats from "../components/ExpenseStats";
+import ExpenseChart from "../components/ExpenseChart";
 
 export default function Dashboard() {
   const [fadeIn, setFadeIn] = useState(false);
