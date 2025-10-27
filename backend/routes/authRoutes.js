@@ -84,7 +84,10 @@ router.get('/dashboard', authMiddler, (req, res) => {
     res.json({
         msg: `Welcome ${req.user.email}, you are authorized!`,
     })
-})
+});
+
+
+
 
 
 

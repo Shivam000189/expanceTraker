@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import API from "../api";
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function ProtectedRoute({ children }) {
@@ -17,6 +18,8 @@ export default function ProtectedRoute({ children }) {
   }, []);
 
   if (isLoading) return <LoadingSpinner message="Checking authentication..." />;
+
+  
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

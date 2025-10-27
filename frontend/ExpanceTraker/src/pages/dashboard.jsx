@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import ExpenseModal from "../components/ExpenseModal";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ExpenseStats from "../components/ExpenseStats";
-import ExpenseChart from "../components/ExpenseChart";
 import Sidebar from "../components/Sidebar";
 
 export default function Dashboard() {
@@ -36,6 +35,7 @@ export default function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpenses(res.data);
+      
     } catch (err) {
       console.error("Error fetching expenses:", err);
       toast.error("Failed to load expenses.");
@@ -43,6 +43,8 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
+  
 
   
   const handleChange = (e) => {

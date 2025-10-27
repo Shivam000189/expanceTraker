@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../api";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
     const [formData, setFormData] = useState({
@@ -9,6 +9,7 @@ export default function Signup() {
         password:"",
     });
 
+    const navigate = useNavigate();
 
     const [message, setMessage] = useState("");
 
@@ -24,6 +25,7 @@ export default function Signup() {
 
             setMessage(res.data.msg || "User registered Successfully!");
             setFormData({name:"", email:"", password:""});
+            navigate("/login")
         }catch(error){
             console.error("Error registering user:", error);
             setMessage(error.response?.data?.msg || "Something went wrong.");
