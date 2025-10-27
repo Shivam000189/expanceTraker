@@ -6,6 +6,7 @@ import ExpenseModal from "../components/ExpenseModal";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ExpenseStats from "../components/ExpenseStats";
 import ExpenseChart from "../components/ExpenseChart";
+import Sidebar from "../components/Sidebar";
 
 export default function Dashboard() {
   const [fadeIn, setFadeIn] = useState(false);
@@ -136,8 +137,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-quill-gray-400 p-6">
+      <Sidebar />
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl text-quill-gray-950 font-bold istok-web-bold">
+        <h2 className="text-3xl text-quill-gray-950 font-bold istok-web-bold ">
           My Expenses
         </h2>
         <button
