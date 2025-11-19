@@ -92,118 +92,58 @@ router.put('/:id', async (req, res)=> {
 })
 
 
-router.get('/filter', async (req, res)=> {
+router.get('/filter', async (req, res) => {
+    try {
+        const {
+            category,
+            from,
+            to,
+            highest,
+            hightest,
+            latest,
+            page = 1,
+            limit = 10,
+        } = req.query;
 
-    try{
-        const {category, from , to} = req.query;
-        const query = {userId: req.user.userId};
+        const query = { userId: req.user.userId };
 
-        if(category){
-           query.category = category; 
-        }
-        if(from && to){
-            query.date = {$gte: new Date(from), $lte: new Date(to)};
-        }
-
-        const expance = await Expance.find(query);
-        res.status(200).json(expance)
-    }catch(error){
-        console.error('Error filtering expenses:', error);
-        res.status(500).json({ msg: 'Server error' });
-    }
-
-})
-
-
-
-router.get('/filter', async (req , res)=>{
-    try{
-        const { hightest , latest } = req.query;
-        const query = {userId: req.user.userId}
-
-        let sortOption = {};
-
-        if(hightest){
-            sortOption.amount = -1;
-        }
-
-        if(latest){
-            sortOption.date = -1;
-        }
-
-        const expance = await Expance.find(query).sort(sortOption);
-        res.status(200).json(expance);
-    }catch(error){
-        console.error('Error filtering expenses:', error);
-        res.status(500).json({ msg: 'Server error' });
-    }
-})
-
-
-
-router.get('/filter', async (req, res)=> {
-    try{
-        const {category, from, to , hightest, latest} = req.query;
-        const query = {userId: req.user.userId};
-
-
-        if(category){
+        if (category) {
             query.category = category;
         }
-        if(from && to){
-            query.date = {$gte: new Date(from), $lte: new Date(to)};
+
+        if (from && to) {
+            query.date = { $gte: new Date(from), $lte: new Date(to) };
         }
 
-        let sortOption = {};
+        const sortOption = {};
 
-
-        if(hightest){
+        if (highest || hightest) {
             sortOption.amount = -1;
         }
-        if(latest){
+
+        if (latest) {
             sortOption.date = -1;
         }
 
+        const numericPage = Math.max(parseInt(page, 10) || 1, 1);
+        const numericLimit = Math.max(parseInt(limit, 10) || 10, 1);
+        const skip = (numericPage - 1) * numericLimit;
 
-        const expances = await Expance.find(query).sort(sortOption);
+        const [expenses, totalItems] = await Promise.all([
+            Expance.find(query).sort(sortOption).skip(skip).limit(numericLimit),
+            Expance.countDocuments(query),
+        ]);
 
-        res.status(200).json(expances);
-    }catch(error){
+        res.status(200).json({
+            currentPage: numericPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / numericLimit),
+            expenses,
+        });
+    } catch (error) {
         console.error('Error filtering expenses:', error);
         res.status(500).json({ msg: 'Server error' });
     }
-});
-
-
-
-router.get('/filter', async (req, res) => {
-  try {
-    const { category, from, to, highest, latest, page = 1, limit = 10 } = req.query;
-    const query = { userId: req.user.userId };
-
-    if (category) query.category = category;
-    if (from && to) query.date = { $gte: new Date(from), $lte: new Date(to) };
-
-    let sortOption = {};
-    if (highest) sortOption.amount = -1;
-    else if (latest) sortOption.date = -1;
-
-    const skip = (page - 1) * limit;
-
-    const expenses = await Expance.find(query)
-      .sort(sortOption)
-      .skip(skip)
-      .limit(Number(limit));
-
-    res.status(200).json({
-      currentPage: page,
-      totalItems: expenses.length,
-      expenses,
-    });
-  } catch (error) {
-    console.error('Error filtering expenses:', error);
-    res.status(500).json({ msg: 'Server error' });
-  }
 });
 
 

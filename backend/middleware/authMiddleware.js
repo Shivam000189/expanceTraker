@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY='mySuperSecretKey123';
 
+const SECRET_KEY = process.env.SECRET_KEY || 'mySuperSecretKey123';
 
 function authMiddler(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -16,7 +16,7 @@ function authMiddler(req, res, next) {
         req.user = decoded;
         next();
     }catch(error){
-        return res.status(403).json({ msg: 'Invalid and expired token '});
+        return res.status(403).json({ msg: 'Invalid or expired token' });
     }
 }
 

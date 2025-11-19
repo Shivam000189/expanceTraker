@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaBars, FaChartPie, FaHome, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +10,7 @@ export default function Sidebar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
+    toast.success("Logged out successfully!");
   };
 
   return (
@@ -54,7 +56,7 @@ export default function Sidebar() {
           <div className="border-t border-gray-700 p-4">
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-red-600 w-full text-left"
+              className="flex items-center gap-3 px-4 py-2 rounded-md bg-red-500 text-white justify-center hover:bg-red-600 shadow-md transition-colors"
             >
               <FaSignOutAlt /> Logout
             </button>
@@ -65,7 +67,7 @@ export default function Sidebar() {
       
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 z-30"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm opacity-100 z-30"
           onClick={() => setIsOpen(false)}
         ></div>
       )}
