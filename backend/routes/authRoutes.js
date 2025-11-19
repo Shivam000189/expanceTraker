@@ -4,7 +4,7 @@ const User = require('../models/auth');
 const jwt = require('jsonwebtoken');
 const authMiddler = require('../middleware/authMiddleware');
 
-const SECRET_KEY = process.env.SECRET_KEY;
+const SECRET_KEY = process.env.SECRET_KEY || 'mySuperSecretKey123';
 
 const router = express.Router();
 
@@ -61,6 +61,11 @@ router.post('/login', async (req, res)=> {
             })
         }
 
+        if (!SECRET_KEY) {
+            console.error('Missing SECRET_KEY environment variable');
+            return res.status(500).json({ msg: 'Server configuration error' });
+        }
+
         const token = jwt.sign(
             {userId : user._id, email: user.email},
             SECRET_KEY,
@@ -85,13 +90,5 @@ router.get('/dashboard', authMiddler, (req, res) => {
         msg: `Welcome ${req.user.email}, you are authorized!`,
     })
 });
-
-
-
-
-
-
-
-
 
 module.exports = router;
