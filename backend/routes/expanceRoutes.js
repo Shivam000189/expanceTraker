@@ -48,14 +48,20 @@ router.delete('/:id' , async (req, res) => {
     try{
         const { id } = req.params;
 
+        // Verify the expense belongs to the user
+        const expense = await Expance.findOne({ _id: id, userId: req.user.userId });
+        if(!expense){
+            return res.status(404).json({ msg: 'Expense not found'});
+        }
+
         const deleteExpance = await Expance.findByIdAndDelete(id);
         
         if(!deleteExpance){
-            return res.status(404).json({ msg: 'Expance Not found'});
+            return res.status(404).json({ msg: 'Expense not found'});
         }
-        res.status(200).json({msg:'Expance delete succsesfully'})
+        res.status(200).json({msg:'Expense deleted successfully'})
     }catch(error){
-        console.error('Error fetching expenses:', error);
+        console.error('Error deleting expense:', error);
         res.status(500).json({ msg: 'Server error' });
     }   
 })
@@ -72,14 +78,20 @@ router.put('/:id', async (req, res)=> {
             return res.status(400).json({ msg:'All fields are required'})
         }
 
+        // Verify the expense belongs to the user
+        const existingExpense = await Expance.findOne({ _id: id, userId: req.user.userId });
+        if(!existingExpense){
+            return res.status(404).json({ msg: 'Expense not found'})
+        }
+
         const updateExpance = await Expance.findByIdAndUpdate(
             id,
             {title, amount, category, date},
-            {new:true}     
+            {new:true, runValidators: true}     
         );
 
         if(!updateExpance){
-            return res.status(404).json({ msg: 'Expance Not Found'})
+            return res.status(404).json({ msg: 'Expense not found'})
         }
         res.status(200).json({
             msg: 'Expense updated successfully',
