@@ -4,7 +4,11 @@ const User = require('../models/auth');
 const jwt = require('jsonwebtoken');
 const authMiddler = require('../middleware/authMiddleware');
 
-const SECRET_KEY = process.env.SECRET_KEY || 'mySuperSecretKey123';
+const SECRET_KEY = process.env.SECRET_KEY || process.env.JWT_SECRET;
+
+if (!SECRET_KEY) {
+  console.error('WARNING: SECRET_KEY or JWT_SECRET environment variable is not set!');
+}
 
 const router = express.Router();
 
