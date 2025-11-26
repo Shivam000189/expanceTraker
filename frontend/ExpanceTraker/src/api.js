@@ -5,7 +5,7 @@ const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
 });
 
-// Add request interceptor to include token
+// Request interceptor: attach token if exists
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -14,12 +14,10 @@ API.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Add response interceptor for error handling
+// Response interceptor: handle 401 errors
 API.interceptors.response.use(
   (response) => response,
   (error) => {
