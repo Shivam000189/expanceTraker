@@ -1,8 +1,10 @@
+// index.js
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const expanceRoutes = require('./routes/expanceRoutes');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
@@ -11,9 +13,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// CORS configuration
+// ✅ Allowed origins (local + production frontend)
+const allowedOrigins = [
+  "http://localhost:5173", // Vite dev server
+  "https://expancetraker-5.onrender.com" // Render frontend
+];
+
+// ✅ CORS configuration
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || (NODE_ENV === 'production' ? false : 'http://localhost:5173'),
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -22,7 +36,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Security headers
+// ✅ Security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
@@ -30,26 +44,25 @@ app.use((req, res, next) => {
   next();
 });
 
-// API Routes
+// ✅ API Routes
 app.use('/auth', authRoutes);
-
-const expanceRoutes = require('./routes/expanceRoutes');
 app.use('/expenses', expanceRoutes);
 
-// Health check endpoint
+// ✅ Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// ✅ Root endpoint
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'Expense Tracker API is running...',
     version: '1.0.0',
     environment: NODE_ENV
   });
 });
 
-// Token verification endpoint
+// ✅ Token verification endpoint
 app.get("/verify-token", (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ valid: false, message: "No token provided" });
@@ -69,7 +82,7 @@ app.get("/verify-token", (req, res) => {
   }
 });
 
-// Error handling middleware
+// ✅ Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
@@ -78,11 +91,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
+// ✅ 404 handler
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
+// ✅ Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${NODE_ENV} mode`);
 });
