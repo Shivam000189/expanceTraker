@@ -8,6 +8,7 @@ import Analytics from "./pages/analytics";
 function App() {
   return (
     <Router>
+      <div>Hello shivam</div>
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
