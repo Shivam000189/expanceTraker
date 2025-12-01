@@ -14,7 +14,6 @@ export default function ExpenseModal({ expense, onClose }) {
 
 
     if (!expense) return null; 
-
     return (
         <div
             className={`fixed inset-0 flex justify-center items-center z-50 transition-all duration-300 ${show ? "bg-black/40 backdrop-blur-sm opacity-100" : "bg-transparent backdrop-blur-0 opacity-0"}`}
