@@ -14,9 +14,6 @@ export const Navbar = ({ onLogin, onSignup }) => {
   }, []);
 
   return (
-    <div className=' min-h-screen bg-black'>
-
-    
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || isMobileMenuOpen
@@ -33,7 +30,7 @@ export const Navbar = ({ onLogin, onSignup }) => {
               <Rocket className="w-6 h-6 text-white" />
             </div>
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-              Nexus
+              FinTrackr
             </span>
           </div>
 
@@ -41,8 +38,8 @@ export const Navbar = ({ onLogin, onSignup }) => {
           <div className="hidden md:flex items-center space-x-8">
             <a href="#" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">Product</a>
             <a href="#" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">Solutions</a>
-            <a href="#" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">Pricing</a>
-            <a href="#" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">Company</a>
+            {/* <a href="#" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">Pricing</a>
+            <a href="#" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">Company</a> */}
           </div>
 
           {/* Desktop Buttons */}
@@ -109,7 +106,7 @@ export const Navbar = ({ onLogin, onSignup }) => {
         </div>
       )}
     </nav>
-    </div>
+    
   );
 };
 

@@ -5,6 +5,7 @@ import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Analytics from "./pages/analytics";
 import Navbar from "./components/Navbar";
+import Main from "./components/home";
 
 function App() {
 
@@ -23,10 +24,7 @@ function MainRoutes() {
       <Route
         path="/"
         element={
-          <Navbar
-            onLogin={() => navigate("/login")}
-            onSignup={() => navigate("/signup")}
-          />
+          <Main></Main>
         }
       />
 
