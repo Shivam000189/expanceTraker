@@ -5,7 +5,7 @@ import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Analytics from "./pages/analytics";
 import Navbar from "./components/Navbar";
-import Main from "./components/home";
+import Main from "./components/Main";
 
 function App() {
 
