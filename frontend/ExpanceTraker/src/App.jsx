@@ -4,34 +4,53 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Analytics from "./pages/analytics";
-import Home from "./components/home";
-
+import Navbar from "./components/Navbar";
 
 function App() {
+
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home></Home>}/>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/analytics"
-          element={
-            <ProtectedRoute>
-              <Analytics />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <MainRoutes />
     </Router>
+  );
+}
+
+function MainRoutes() {
+  const navigate = useNavigate();
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Navbar
+            onLogin={() => navigate("/login")}
+            onSignup={() => navigate("/signup")}
+          />
+        }
+      />
+
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 
