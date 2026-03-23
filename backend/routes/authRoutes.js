@@ -12,8 +12,6 @@ if (!SECRET_KEY) {
 
 const router = express.Router();
 
-router.use(express.json());
-
 
 router.post("/register", async (req, res) => {
     try{
