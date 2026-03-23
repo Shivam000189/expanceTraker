@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 /* @import url("https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&display=swap"); */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -75,6 +76,21 @@
 
 
 }
+
+
+
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-expance-dark: #1a1617;
+  --color-expance-orange: #ff4b2b;
+  --color-expance-red: #ff416c;
+}
+
+body {
+  @apply font-sans antialiased bg-stone-100;
+}
+
 
 
 /* :root {
