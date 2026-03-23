@@ -5,7 +5,7 @@ export default function ExpenseModal({ expense, onClose }) {
 
     useEffect(() => {
             setTimeout(() => setShow(true), 10);
-        }, []);
+        }, []); 
 
     const handleClose = () => {
         setShow(false);

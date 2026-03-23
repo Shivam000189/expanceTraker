@@ -7,7 +7,7 @@ export default function Signup() {
         name:"",
         email:"",
         password:"",
-    });
+});
 
     const navigate = useNavigate();
 
@@ -18,14 +18,14 @@ export default function Signup() {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
-    const handleSumbit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try{
             const res = await API.post("/auth/register", formData);
-
+            console.log("Response:", res.data);
             setMessage(res.data.msg || "User registered Successfully!");
             setFormData({name:"", email:"", password:""});
-            navigate("/login")
+            setTimeout(() => navigate("/auth/login"), 1500);
         }catch(error){
             console.error("Error registering user:", error);
             setMessage(error.response?.data?.msg || "Something went wrong.");
@@ -49,7 +49,7 @@ export default function Signup() {
                     <p className="text-nile-blue-200 text-sm">Sign up to Track your Expences</p>
                 </div>
 
-                <form onSubmit={handleSumbit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
                         <input type="text"
                         name="name"
@@ -85,7 +85,7 @@ export default function Signup() {
                     </div>
 
 
-                    <button type="Sumbit" className="w-full bg-gradient-to-r from-nile-blue-600 to-nile-blue-700 text-white py-3 rounded-lg font-semibold shadow-lg hover:from-nile-blue-700 hover:to-nile-blue-800 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nile-blue-400 focus:ring-offset-2 focus:ring-offset-transparent">Register</button>
+                    <button type="submit" className="w-full bg-gradient-to-r from-nile-blue-600 to-nile-blue-700 text-white py-3 rounded-lg font-semibold shadow-lg hover:from-nile-blue-700 hover:to-nile-blue-800 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nile-blue-400 focus:ring-offset-2 focus:ring-offset-transparent">Register</button>
                 </form>
 
                 {message && (

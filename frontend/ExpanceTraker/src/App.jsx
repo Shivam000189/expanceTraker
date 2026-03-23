@@ -1,10 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Signup from "./pages/signup";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Analytics from "./pages/analytics";
-import Navbar from "./components/Navbar";
 import Main from "./components/Main";
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
 }
 
 function MainRoutes() {
-  const navigate = useNavigate();
 
   return (
     <Routes>

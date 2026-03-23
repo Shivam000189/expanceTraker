@@ -12,16 +12,12 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-
-// ✅ Allowed origins (local + production frontend)
 const allowedOrigins = [
-  "http://localhost:5173", // Vite dev server
-  "https://expancetraker-5.onrender.com" // Render frontend
+  "https://expance-traker.vercel.app"
 ];
 
-// ✅ CORS configuration
-const corsOptions = {
-  origin: (origin, callback) => {
+app.use(cors({
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -29,12 +25,14 @@ const corsOptions = {
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200
-};
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.options("*", cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ✅ Security headers
 app.use((req, res, next) => {
