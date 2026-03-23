@@ -16,20 +16,24 @@ const allowedOrigins = [
   "https://expance-traker.vercel.app"
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
 
-app.options("*", cors());
+
+app.use(cors({
+  origin: "https://expance-traker.vercel.app",
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
