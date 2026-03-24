@@ -1,9 +1,13 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Expance = require('../models/expance');
 const authMiddler = require('../middleware/authMiddleware');
 
 
 const router = express.Router();
+
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
+const toNumber = (value) => Number(value);
 
 router.use(express.json());
 router.use(authMiddler);
@@ -13,16 +17,18 @@ router.post('/', async (req, res) => {
     try{
 
         const {title, amount, category, date} = req.body;
+        const parsedAmount = toNumber(amount);
+        const parsedDate = new Date(date);
 
-        if(!title || !amount || !category || !date){
+        if(!title || Number.isNaN(parsedAmount) || !category || Number.isNaN(parsedDate.getTime())){
             return res.status(400).json({ msg:'All fields are required'});
         }
 
         const newExpance = await Expance.create({
             title,
-            amount,
+            amount: parsedAmount,
             category,
-            date,
+            date: parsedDate,
             userId: req.user.userId
         });
         return res.status(201).json({ msg: 'Expance added succesfully', expense: newExpance})
@@ -47,6 +53,9 @@ router.get('/', async (req, res)=> {
 router.delete('/:id' , async (req, res) => {
     try{
         const { id } = req.params;
+        if (!isValidObjectId(id)) {
+            return res.status(400).json({ msg: 'Invalid expense id' });
+        }
 
         // Verify the expense belongs to the user
         const expense = await Expance.findOne({ _id: id, userId: req.user.userId });
@@ -72,9 +81,15 @@ router.put('/:id', async (req, res)=> {
     try{
         const { id } = req.params;
         const {title , amount, category, date} = req.body;
+        const parsedAmount = toNumber(amount);
+        const parsedDate = new Date(date);
+
+        if (!isValidObjectId(id)) {
+            return res.status(400).json({ msg: 'Invalid expense id' });
+        }
 
 
-        if(!title || !amount || !category || !date){
+        if(!title || Number.isNaN(parsedAmount) || !category || Number.isNaN(parsedDate.getTime())){
             return res.status(400).json({ msg:'All fields are required'})
         }
 
@@ -86,7 +101,7 @@ router.put('/:id', async (req, res)=> {
 
         const updateExpance = await Expance.findByIdAndUpdate(
             id,
-            {title, amount, category, date},
+            {title, amount: parsedAmount, category, date: parsedDate},
             {new:true, runValidators: true}     
         );
 

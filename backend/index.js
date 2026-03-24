@@ -1,7 +1,6 @@
 // index.js
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const expanceRoutes = require('./routes/expanceRoutes');
@@ -30,10 +29,23 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // }));
 
 
-app.use(cors({
-  origin: "https://expance-traker.vercel.app",
-  credentials: true
-}));
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim())
+    : ['http://localhost:5173', 'https://expance-traker.vercel.app']
+);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
-import {motion} from 'motion/react';
+import { motion as Motion } from 'framer-motion';
 import { ArrowRight, Eye, Globe, User } from "lucide-react"; 
-import { Global } from "recharts";
+
 
 export default function Signup() {
     const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ export default function Signup() {
 
     const navigate = useNavigate();
 
-    const [message, setMessage] = useState("");
+    // const [message, setMessage] = useState("");
 
 
     const handleChange =  (e) => {
@@ -26,12 +26,12 @@ export default function Signup() {
         try{
             const res = await API.post("/auth/register", formData);
             console.log("Response:", res.data);
-            setMessage(res.data.msg || "User registered Successfully!");
+            // setMessage(res.data.msg || "User registered Successfully!");
             setFormData({name:"", email:"", password:""});
-            setTimeout(() => navigate("/auth/login"), 1500);
+            setTimeout(() => navigate("/login"), 1500);
         }catch(error){
             console.error("Error registering user:", error);
-            setMessage(error.response?.data?.msg || "Something went wrong.");
+            // setMessage(error.response?.data?.msg || "Something went wrong.");
         }
     };
 
@@ -162,14 +162,14 @@ export default function Signup() {
             
                 {/*Phone container */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-2/3 flex items-end justify-center">
-                    <motion.div 
+                    <Motion.div 
                         initial={{ y: 100, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="relative w-full h-full"
                     >
                         <img src="" alt="hand holding phone with financial app"  className="w-full h-full object-bottom drop-shadow-2xl" referrerPolicy="no-referrer"/>
-                    </motion.div>
+                    </Motion.div>
                 </div>
 
                 <div className="absolute bottom-8 right-8">
@@ -249,12 +249,12 @@ export default function Signup() {
                             <button type="button" className="text-orange-500 font-medium hover:underline text-sm">Forgot password?</button>
                         </div>
 
-                        <motion.button type="submit"  whileHover={{scale:1.02}} whileTap={{scale:0.98}} 
+                        <Motion.button type="submit"  whileHover={{scale:1.02}} whileTap={{scale:0.98}} 
                         className="w-full py-4 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all"
                         >
                             <ArrowRight size={20} />
                             Sign Up
-                        </motion.button>
+                        </Motion.button>
                     </form>
                 </div>
 
