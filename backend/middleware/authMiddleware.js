@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = process.env.SECRET_KEY || 'mySuperSecretKey123';
+const SECRET_KEY = process.env.SECRET_KEY || process.env.JWT_SECRET;
 
 function authMiddler(req, res, next) {
+     if (!SECRET_KEY) {
+        return res.status(500).json({ msg: 'Server configuration error' });
+    }
+
+
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
