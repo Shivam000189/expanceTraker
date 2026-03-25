@@ -188,11 +188,11 @@ export default function Signup() {
                         <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500 flex items-center justify-center" >
                             <div className="w-6 h-6 rounded-full bg-white" />
                         </div>
-                        <span className="text-2xl font-bold tracking-tight text-[#1a1617]">ExpanceTraker</span>
+                        <span className="text-2xl font-bold tracking-tight text-[#1a1617]">Spendora</span>
                     </div>
 
 
-                    <button className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
+                    <button onClick={()=> {navigate('/login')}} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
                         <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
                             <User size={16}/>
                         </div>
