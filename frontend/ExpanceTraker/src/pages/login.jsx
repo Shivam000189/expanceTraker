@@ -155,7 +155,7 @@ export default function Login() {
 
                 <div className="relative z-10">
                     <p className="text-white/40 text-sm font-light tracking-wide mb-24">
-                        Global payments made simple - online payments solutions for you
+                        Smart spending. Clear insights. Better decisions - Track. Analyze. Grow.
                     </p>
 
                     <h1 className="text-white text-7xl font-bold leading-[1.1] tracking-tight max-w-md">
@@ -164,7 +164,7 @@ export default function Login() {
                 </div>
             
                 {/*Phone container */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-2/3 flex items-end justify-center">
+                {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-2/3 flex items-end justify-center">
                     <Motion.div 
                         initial={{ y: 100, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -173,7 +173,7 @@ export default function Login() {
                     >
                         <img src="" alt="hand holding phone with financial app"  className="w-full h-full object-bottom drop-shadow-2xl" referrerPolicy="no-referrer"/>
                     </Motion.div>
-                </div>
+                </div> */}
 
                 <div className="absolute bottom-8 right-8">
                     <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/40">
@@ -191,11 +191,11 @@ export default function Login() {
                         <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500 flex items-center justify-center" >
                             <div className="w-6 h-6 rounded-full bg-white" />
                         </div>
-                        <span className="text-2xl font-bold tracking-tight text-[#1a1617]">ExpanceTraker</span>
+                        <span className="text-2xl font-bold tracking-tight text-[#1a1617]">Spendora</span>
                     </div>
 
 
-                    <button className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
+                    <button onClick={()=> {navigate('/Signup')}} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
                         <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
                             <User size={16}/>
                         </div>
