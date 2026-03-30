@@ -26,7 +26,7 @@ export default function Login() {
       //token
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
-        navigate("/expenses");
+        navigate("/dashboard");
       }
 
       setFormData({ email: "", password: "" });
