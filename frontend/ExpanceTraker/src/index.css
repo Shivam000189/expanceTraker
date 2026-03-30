@@ -80,14 +80,7 @@
   --color-expance-orange: #ff4b2b;
   --color-expance-red: #ff416c;
 
-
-
 }
-
-
-
-
-
 
 body {
   @apply font-sans antialiased bg-stone-100;
@@ -102,6 +95,7 @@ body {
 .nav-btn-primary {
   @apply bg-[#4B2C85] text-white px-6 py-2 uppercase text-sm tracking-widest;
 }
+
 .nav-btn-primary:hover {
   @apply bg-[#3b226b];
 }
