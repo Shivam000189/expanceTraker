@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Signup from "./pages/signup";
 import Login from "./pages/login";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/expense";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Analytics from "./pages/analytics";
 import Main from "./components/Main";
+import Expenses from "./pages/dashboard";
+import Setting from "./pages/setting";
 
 function App() {
 
@@ -19,33 +21,14 @@ function MainRoutes() {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <Main></Main>
-        }
-      />
-
+      <Route path="/" element={<Main></Main>}/>
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/expenses"element={<ProtectedRoute> <Dashboard /> </ProtectedRoute>}/>
+      <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>}/>
+      <Route path="/dashboard" element={<Expenses />} />
+      <Route path="/setting" element={<Setting />} />
 
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/analytics"
-        element={
-          <ProtectedRoute>
-            <Analytics />
-          </ProtectedRoute>
-        }
-      />
     </Routes>
   );
 }
