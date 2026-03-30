@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 /* @import url("https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&display=swap"); */
@@ -74,23 +75,50 @@
   --color-quill-gray-950: #363635;
 
 
-
-}
-
-
-
-
-@theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --color-expance-dark: #1a1617;
   --color-expance-orange: #ff4b2b;
   --color-expance-red: #ff416c;
+
+
+
 }
+
+
+
+
+
 
 body {
   @apply font-sans antialiased bg-stone-100;
 }
 
+.nav-link {
+  @apply text-gray-600 uppercase text-xs tracking-widest;
+}
+.nav-link:hover {
+  @apply text-black;
+}
+.nav-btn-primary {
+  @apply bg-[#4B2C85] text-white px-6 py-2 uppercase text-sm tracking-widest;
+}
+.nav-btn-primary:hover {
+  @apply bg-[#3b226b];
+}
+
+.nav-btn-ghost {
+  @apply text-gray-600 border border-gray-300 px-6 py-2 uppercase text-sm;
+}
+.nav-btn-ghost:hover {
+  @apply text-black border-black;
+}
+
+.mobile-link {
+  @apply block py-3 border-b border-neutral-900 font-sans text-[13px] tracking-[0.12em] uppercase text-neutral-500 transition-colors;
+}
+.mobile-link:hover {
+  @apply text-[#f0ece4];
+}
 
 
 /* :root {

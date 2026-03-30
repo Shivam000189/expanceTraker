@@ -1,103 +1,158 @@
 import React from "react";
 import Navbar from "./Navbar";
-import { Rocket, Shield, Sparkles, Zap, Mail } from "lucide-react";
+import { Rocket, Shield, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Main = () => {
-    const navigate = useNavigate();
-    const handleclick = () => {
-        navigate('/signup');
-    } 
-  return (
-    <div className="bg-black min-h-screen text-slate-100">
-        <Navbar
-            onLogin={() => navigate("/login")}
-            onSignup={() => navigate("/signup")}
-          />
+  const navigate = useNavigate();
 
+  const features = [
+    {
+      icon: <Rocket size={20} className="text-white" />,
+      title: "Track with Ease",
+      body: "Add, edit, and manage your daily expenses effortlessly.",
+      num: "01",
+    },
+    {
+      icon: <Shield size={20} className="text-white" />,
+      title: "Your Data, Secure",
+      body: "Your financial data stays private and safe — always.",
+      num: "02",
+    },
+    {
+      icon: <Sparkles size={20} className="text-white" />,
+      title: "Smart Insights",
+      body: "Visual charts help you stay within limits.",
+      num: "03",
+    },
+  ];
+
+  return (
+    <div className="bg-white text-[#4B2C85] min-h-screen overflow-x-hidden font-serif">
       
-      <section className="pt-40 pb-32 px-6 text-center max-w-4xl mx-auto animate-fade-in">
-        <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-purple-500">
-          Track smarter Spend better Live easier
+      <Navbar
+        onLogin={() => navigate("/login")}
+        onSignup={() => navigate("/signup")}
+      />
+
+      {/* HERO */}
+      <section className="pt-40 pb-28 px-6 max-w-[900px] mx-auto text-center">
+        <span className="text-[11px] tracking-[0.3em] uppercase text-neutral-500 block mb-5 font-sans">
+          Personal Finance, Reimagined
+        </span>
+
+        <h1 className="text-[clamp(48px,7vw,88px)] font-black leading-[1.05] tracking-tight mb-6">
+          Track smarter.{" "}
+          <em className="italic text-black">Spend better.</em>
+          <br />
+          Live easier.
         </h1>
 
-        <p className="text-lg md:text-xl text-slate-300 mb-10">
-          Take control of your money with smart insights—track, manage, and balance your expenses effortlessly.
+        <p className="text-neutral-500 text-lg leading-relaxed max-w-xl mx-auto mb-12 font-sans">
+          Take control of your money with smart insights — track, manage,
+          and balance your expenses effortlessly.
         </p>
 
-        <div className="flex justify-center gap-4">
-          <button className="px-8 py-3 rounded-full bg-brand-600 hover:bg-gray-500 text-white font-medium shadow-lg shadow-brand-500/30 transition-all cursor-pointer" onClick={handleclick}>
-            Get Started
+        <div className="flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => navigate("/signup")}
+            className="bg-white text-black px-8 py-3 text-sm tracking-widest uppercase font-medium hover:bg-neutral-200 transition"
+          >
+            Get Started Free
           </button>
 
           <a
             href="#features"
-            className="px-8 py-3 rounded-full bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all"
+            className="border border-neutral-700 px-8 py-3 text-sm tracking-wide uppercase text-[#4B2C85] hover:text-black hover:bg-gray-400 hover:border-neutral-500 transition"
           >
-            Learn More
+            See How It Works
           </a>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-20 border-y border-neutral-800 py-8 flex justify-center">
+          {[
+            { num: "10K+", label: "Active Users" },
+            { num: "₹2Cr+", label: "Tracked Monthly" },
+            { num: "99.9%", label: "Uptime" },
+          ].map((s, i) => (
+            <div
+              key={i}
+              className="px-10 text-center border-r border-neutral-800 last:border-none"
+            >
+              <div className="text-2xl font-medium text-black">{s.num}</div>
+              <div className="text-[11px] tracking-widest uppercase text-neutral-600 mt-1">
+                {s.label}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      
-      <section id="features" className="py-24 px-6 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-16">
-            Why Choose <span className="text-brand-500">FinTrackr?</span>
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-10">
-
-            
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:-translate-y-2 transition-all duration-300 shadow-xl shadow-black/30">
-            <Rocket className="w-12 h-12 text-brand-500 mb-6" />
-            <h3 className="text-2xl font-semibold mb-4">Track with Ease</h3>
-            <p className="text-slate-400">
-                Add, edit, and manage your daily expenses effortlessly.  
-                FinTrackr keeps everything organized so you always know where your money goes.
-            </p>
-            </div>
-
-            
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:-translate-y-2 transition-all duration-300 shadow-xl shadow-black/30">
-            <Shield className="w-12 h-12 text-brand-500 mb-6" />
-            <h3 className="text-2xl font-semibold mb-4">Your Data, Secure</h3>
-            <p className="text-slate-400">
-                With encrypted authentication and protected routes, your financial data
-                stays private and safe—always.
-            </p>
-            </div>
-
-            
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:-translate-y-2 transition-all duration-300 shadow-xl shadow-black/30">
-            <Sparkles className="w-12 h-12 text-brand-500 mb-6" />
-            <h3 className="text-2xl font-semibold mb-4">Smart Insights</h3>
-            <p className="text-slate-400">
-                Visual charts and monthly analytics show where you overspend,
-                helping you stay within limits and take control of your finances.
-            </p>
-            </div>
-
+      {/* FEATURES */}
+      <section id="features" className="px-6 py-24 max-w-[1100px] mx-auto">
+        <div className="text-center mb-16">
+          <span className="text-[11px] tracking-[0.3em] uppercase text-neutral-500 block mb-4 font-sans">
+            Features
+          </span>
+          <h2 className="text-[clamp(32px,4vw,52px)] font-bold tracking-tight">
+            Why choose <span className="text-black">FinTrackr?</span>
+          </h2>
         </div>
-        </section>
 
-      
-      <section className="py-24 text-center px-6 bg-gradient-to-br from-slate-900 to-black">
-        <h2 className="text-4xl font-bold mb-6">
-          Ready to Manage Your expance?
+        <div className="grid md:grid-cols-3 gap-px ">
+          {features.map((card, i) => (
+            <div
+              key={i}
+              className="bg-[#0f0f0f] rounded-2xl p-12 hover:bg-[#111] border border-neutral-900 transition"
+            >
+              <div className="flex justify-between mb-8">
+                <div className="w-12 h-12 border border-neutral-700 flex items-center justify-center">
+                  {card.icon}
+                </div>
+                <span className="text-xs text-neutral-700 tracking-wider">
+                  {card.num}
+                </span>
+              </div>
+
+              <h3 className="text-xl font-bold mb-4">
+                {card.title}
+              </h3>
+
+              <p className="text-neutral-500 leading-relaxed text-sm">
+                {card.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-28 px-6 text-center">
+        <span className="text-[11px] tracking-[0.3em] uppercase text-neutral-500 block mb-4 font-sans">
+          Get Started
+        </span>
+
+        <h2 className="text-[clamp(36px,5vw,64px)] font-black leading-tight mb-6">
+          Ready to take <br />
+          <em className="italic text-black">control?</em>
         </h2>
-        <p className="text-slate-300 mb-10 max-w-2xl mx-auto">
-          Join thousands of User using FinTrackr to manage there Expance
-          Service. Let’s build the future together.
+
+        <p className="text-neutral-500 max-w-md mx-auto mb-10 leading-relaxed">
+          Join thousands using FinTrackr to manage their finances with clarity and confidence.
         </p>
 
-        <button className="px-10 py-4 rounded-full bg-brand-600 hover:bg-brand-500 text-white font-semibold text-lg shadow-lg shadow-brand-500/30 transition-all">
-          Start Now
+        <button
+          onClick={() => navigate("/signup")}
+          className="bg-white text-black border rounded-2xl px-10 py-3 uppercase tracking-widest text-sm hover:bg-neutral-200 transition"
+        >
+          Start for Free
         </button>
       </section>
 
-      
-      <footer className="py-10 text-center border-t border-slate-800">
-        <p className="text-slate-500">© {new Date().getFullYear()} FinTrackr. All rights reserved.</p>
+      {/* FOOTER */}
+      <footer className="border-t border-neutral-900 py-8 text-center text-neutral-700 text-sm">
+        © {new Date().getFullYear()} FinTrackr. All rights reserved.
       </footer>
     </div>
   );
