@@ -24,9 +24,9 @@ function MainRoutes() {
       <Route path="/" element={<Main></Main>}/>
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/expenses"element={<ProtectedRoute> <Dashboard /> </ProtectedRoute>}/>
+      <Route path="/expenses"element={<ProtectedRoute> <Expenses /> </ProtectedRoute>}/>
       <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>}/>
-      <Route path="/dashboard" element={<Expenses />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/setting" element={<Setting />} />
 
     </Routes>
