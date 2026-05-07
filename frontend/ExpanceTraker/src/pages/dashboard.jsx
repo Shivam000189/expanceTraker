@@ -54,15 +54,15 @@ export default function Dashboard() {
     <div className="flex min-h-screen bg-[#FAFAFF] text-[#1A1A1A]">
       <Sidebar />
 
-      <main className="ml-64 flex-1 p-8 space-y-8">
+      <main className="w-full flex-1 space-y-6 px-4 py-6 pt-24 sm:px-6 md:ml-64 md:p-8 md:space-y-8">
         {/* Filters */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-[#4B2C85]">Analytics</h1>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#4B2C85]">Analytics</h1>
 
           <select
             value={filterMonth}
             onChange={(e) => setFilterMonth(e.target.value)}
-            className="border rounded-lg px-3 py-2 text-sm"
+            className="w-full rounded-lg border px-3 py-2 text-sm sm:w-auto"
           >
             <option value="All">All Months</option>
             <option value="Jan">January</option>
@@ -73,11 +73,11 @@ export default function Dashboard() {
         </div>
 
         {/* Line Chart: Trends Over Time */}
-        <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
-          <h3 className="text-xl font-semibold text-[#4B2C85] mb-2">
+        <div className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 overflow-hidden">
+          <h3 className="text-lg sm:text-xl font-semibold text-[#4B2C85] mb-2">
             Spending Over Time
           </h3>
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={260}>
             <LineChart data={expenseByDate}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
@@ -89,13 +89,13 @@ export default function Dashboard() {
         </div>
 
         {/* Bar + Pie Row */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8">
           {/* Bar Chart: Category Comparison */}
-          <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
-            <h3 className="text-xl font-semibold text-[#4B2C85] mb-2">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 overflow-hidden">
+            <h3 className="text-lg sm:text-xl font-semibold text-[#4B2C85] mb-2">
               Expenses by Category
             </h3>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={260}>
               <BarChart data={expenseByCategory}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
@@ -112,11 +112,11 @@ export default function Dashboard() {
           </div>
 
           {/* Pie Chart */}
-          <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
-            <h3 className="text-xl font-semibold text-[#4B2C85] mb-2">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 overflow-hidden">
+            <h3 className="text-lg sm:text-xl font-semibold text-[#4B2C85] mb-2">
               Proportion by Category
             </h3>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={260}>
               <PieChart>
                 <Pie
                   data={expenseByCategory}

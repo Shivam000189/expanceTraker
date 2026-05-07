@@ -38,7 +38,7 @@ export default function DonutChart({ data, total }) {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <div className="relative w-[200px] h-[200px] flex items-center justify-center">
+    <div className="relative mx-auto w-[200px] h-[200px] flex shrink-0 items-center justify-center">
       <svg width={size} height={size}>
         {slices.map((s, i) => (
           <path

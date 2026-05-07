@@ -140,9 +140,9 @@ export default function Signup() {
 
 //         </div>
 
-    return ( <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] p-4 md:p-8">
+    return ( <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] p-3 sm:p-4 md:p-8">
         {/*main container */}
-        <div className="w-full max-w-6xl h-[90vh] min-h-[600px] flex overflow-hidden rounded-[40px] shadow-2xl bg-[#1a1617]">
+        <div className="w-full max-w-6xl min-h-[calc(100vh-1.5rem)] overflow-hidden rounded-[28px] bg-[#1a1617] shadow-2xl sm:min-h-[calc(100vh-2rem)] sm:rounded-[40px] lg:h-[90vh] lg:min-h-[600px] lg:flex">
 
             {/*Left container */}
             <div className="hidden lg:flex flex-1 relative flex-col p-12 overflow-hidden">
@@ -181,14 +181,14 @@ export default function Signup() {
 
 
             {/*Right container - left */}
-            <div className="flex-1 bg-white rounded-[40px] lg:rounded-l-[40px] lg:rounded-r-none relative flex flex-col p-8 md:p-16">
+            <div className="min-h-[calc(100vh-1.5rem)] flex-1 bg-white rounded-[28px] relative flex flex-col p-5 sm:p-8 md:p-12 lg:min-h-0 lg:rounded-l-[40px] lg:rounded-r-none lg:p-16">
                 {/*Navigation container */}
-                <div className="flex justify-between items-center mb-14">
-                    <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between lg:mb-14">
+                    <div className="flex items-center gap-2 min-w-0">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500 flex items-center justify-center" >
                             <div className="w-6 h-6 rounded-full bg-white" />
                         </div>
-                        <span className="text-2xl font-bold tracking-tight text-[#1a1617]">Spendora</span>
+                        <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#1a1617]">Spendora</span>
                     </div>
 
 
@@ -203,7 +203,7 @@ export default function Signup() {
                 {/*SingUp container */}
 
                 <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
-                    <h2 className="text-5xl font-bold text-[#1a1617] mb-10">Sign Up</h2>
+                    <h2 className="text-4xl sm:text-5xl font-bold text-[#1a1617] mb-8 sm:mb-10">Sign Up</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
@@ -214,7 +214,7 @@ export default function Signup() {
                                     placeholder="Username"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-lg placeholder:text-gray-400"
+                                    className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-base sm:text-lg placeholder:text-gray-400"
                                 />
                             </div>
                         </div>
@@ -228,7 +228,7 @@ export default function Signup() {
                                 placeholder="Email" 
                                 value={formData.email} 
                                 onChange={handleChange}
-                                className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-lg placeholder:text-gray-400"
+                                className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-base sm:text-lg placeholder:text-gray-400"
                                 />
                             </div>
                         </div>
@@ -237,7 +237,7 @@ export default function Signup() {
                         <div className="space-y-2">
                             <div className="relative">
                                 <input type="password" name="password" placeholder="password" value={formData.password} onChange={handleChange}
-                                className="w-full px-6 py-4 rounded-2xl border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-lg placeholder:text-gray-400"
+                                className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none text-base sm:text-lg placeholder:text-gray-400"
                                 />
                                 <button type="button" className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
                                     <Eye size={20}/>
@@ -250,7 +250,7 @@ export default function Signup() {
                         </div>
 
                         <Motion.button type="submit"  whileHover={{scale:1.02}} whileTap={{scale:0.98}} 
-                        className="w-full py-4 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all"
+                        className="w-full py-3 sm:py-4 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all"
                         >
                             <ArrowRight size={20} />
                             Sign Up

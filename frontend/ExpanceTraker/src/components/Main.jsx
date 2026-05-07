@@ -36,41 +36,41 @@ const Main = () => {
       />
 
       {/* HERO */}
-      <section className="pt-40 pb-28 px-6 max-w-[900px] mx-auto text-center">
+      <section className="pt-28 pb-16 px-4 sm:px-6 md:pt-40 md:pb-28 max-w-[900px] mx-auto text-center">
         <span className="text-[11px] tracking-[0.3em] uppercase text-neutral-500 block mb-5 font-sans">
           Personal Finance, Reimagined
         </span>
 
-        <h1 className="text-[clamp(48px,7vw,88px)] font-black leading-[1.05] tracking-tight mb-6">
+        <h1 className="text-[clamp(38px,7vw,88px)] font-black leading-[1.08] tracking-tight mb-6">
           Track smarter.{" "}
           <em className="italic text-black">Spend better.</em>
           <br />
           Live easier.
         </h1>
 
-        <p className="text-neutral-500 text-lg leading-relaxed max-w-xl mx-auto mb-12 font-sans">
+        <p className="text-neutral-500 text-base sm:text-lg leading-relaxed max-w-xl mx-auto mb-10 sm:mb-12 font-sans">
           Take control of your money with smart insights — track, manage,
           and balance your expenses effortlessly.
         </p>
 
-        <div className="flex justify-center gap-4 flex-wrap">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
           <button
             onClick={() => navigate("/signup")}
-            className="bg-white text-black px-8 py-3 text-sm tracking-widest uppercase font-medium hover:bg-neutral-200 transition"
+            className="bg-white text-black px-6 sm:px-8 py-3 text-sm tracking-widest uppercase font-medium hover:bg-neutral-200 transition"
           >
             Get Started Free
           </button>
 
           <a
             href="#features"
-            className="border border-neutral-700 px-8 py-3 text-sm tracking-wide uppercase text-[#4B2C85] hover:text-black hover:bg-gray-400 hover:border-neutral-500 transition"
+            className="border border-neutral-700 px-6 sm:px-8 py-3 text-sm tracking-wide uppercase text-[#4B2C85] hover:text-black hover:bg-gray-400 hover:border-neutral-500 transition"
           >
             See How It Works
           </a>
         </div>
 
         {/* Stats */}
-        <div className="mt-20 border-y border-neutral-800 py-8 flex justify-center">
+        <div className="mt-14 sm:mt-20 border-y border-neutral-800 py-6 sm:py-8 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-0">
           {[
             { num: "10K+", label: "Active Users" },
             { num: "₹2Cr+", label: "Tracked Monthly" },
@@ -78,7 +78,7 @@ const Main = () => {
           ].map((s, i) => (
             <div
               key={i}
-              className="px-10 text-center border-r border-neutral-800 last:border-none"
+              className="px-4 sm:px-6 lg:px-10 text-center border-neutral-800 sm:border-r last:border-none"
             >
               <div className="text-2xl font-medium text-black">{s.num}</div>
               <div className="text-[11px] tracking-widest uppercase text-neutral-600 mt-1">
@@ -90,7 +90,7 @@ const Main = () => {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="px-6 py-24 max-w-[1100px] mx-auto">
+      <section id="features" className="px-4 sm:px-6 py-16 sm:py-24 max-w-[1100px] mx-auto">
         <div className="text-center mb-16">
           <span className="text-[11px] tracking-[0.3em] uppercase text-neutral-500 block mb-4 font-sans">
             Features
@@ -100,11 +100,11 @@ const Main = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-px ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-px">
           {features.map((card, i) => (
             <div
               key={i}
-              className="bg-[#0f0f0f] rounded-2xl p-12 hover:bg-[#111] border border-neutral-900 transition"
+              className="bg-[#0f0f0f] rounded-2xl p-6 sm:p-8 lg:p-12 hover:bg-[#111] border border-neutral-900 transition"
             >
               <div className="flex justify-between mb-8">
                 <div className="w-12 h-12 border border-neutral-700 flex items-center justify-center">
@@ -128,7 +128,7 @@ const Main = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-28 px-6 text-center">
+      <section className="py-20 sm:py-28 px-4 sm:px-6 text-center">
         <span className="text-[11px] tracking-[0.3em] uppercase text-neutral-500 block mb-4 font-sans">
           Get Started
         </span>

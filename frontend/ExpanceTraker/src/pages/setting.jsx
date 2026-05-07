@@ -69,26 +69,26 @@ export default function Setting() {
     <div className="flex min-h-screen bg-[#FAFAFF] text-[#1A1A1A]">
       <Sidebar />
 
-      <main className="ml-64 flex-1 p-8 space-y-8">
-        <h1 className="text-3xl font-bold text-[#4B2C85] mb-4">
+      <main className="w-full flex-1 space-y-6 px-4 py-6 pt-24 sm:px-6 md:ml-64 md:p-8 md:space-y-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#4B2C85] mb-4">
           Account Settings
         </h1>
 
         {/* Profile Info */}
-        <section className="bg-white p-6 rounded-xl shadow border border-gray-100 space-y-4">
+        <section className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 space-y-4">
           <h2 className="text-xl font-semibold text-[#4B2C85]">Profile Info</h2>
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="w-16 h-16 shrink-0 rounded-full overflow-hidden bg-gray-200">
               {profile.avatar ? (
                 <img src={profile.avatar} alt="avatar" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-gray-400 flex items-center justify-center h-full">Avatar</span>
               )}
             </div>
-            <input type="file" onChange={handleAvatarChange} className="text-sm" />
+            <input type="file" onChange={handleAvatarChange} className="w-full text-sm" />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <input
               type="text"
               name="name"
@@ -121,9 +121,9 @@ export default function Setting() {
         </section>
 
         {/* Password Management */}
-        <section className="bg-white p-6 rounded-xl shadow border border-gray-100 space-y-4">
+        <section className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 space-y-4">
           <h2 className="text-xl font-semibold text-[#4B2C85]">Password Management</h2>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <input
               type="password"
               name="current"
@@ -150,7 +150,7 @@ export default function Setting() {
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-start gap-2">
             <input
               type="checkbox"
               checked={password.twoFactor}
@@ -165,16 +165,16 @@ export default function Setting() {
         </section>
 
         {/* Preferences */}
-        <section className="bg-white p-6 rounded-xl shadow border border-gray-100 space-y-4">
+        <section className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 space-y-4">
           <h2 className="text-xl font-semibold text-[#4B2C85]">Preferences</h2>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Theme */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <span>Theme:</span>
               <select
                 value={preferences.theme}
                 onChange={(e) => handlePreferencesChange("theme", e.target.value)}
-                className="border px-2 py-1 rounded-lg"
+                className="w-full border px-2 py-2 rounded-lg sm:w-auto"
               >
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
@@ -182,12 +182,12 @@ export default function Setting() {
             </div>
 
             {/* Language */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <span>Language:</span>
               <select
                 value={preferences.language}
                 onChange={(e) => handlePreferencesChange("language", e.target.value)}
-                className="border px-2 py-1 rounded-lg"
+                className="w-full border px-2 py-2 rounded-lg sm:w-auto"
               >
                 <option>English</option>
                 <option>Spanish</option>
@@ -196,7 +196,7 @@ export default function Setting() {
             </div>
 
             {/* Notifications */}
-            <div className="col-span-2 flex flex-col gap-2">
+            <div className="lg:col-span-2 flex flex-col gap-2">
               <span>Notifications:</span>
               <label>
                 <input
@@ -228,12 +228,12 @@ export default function Setting() {
             </div>
 
             {/* Dashboard layout */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <span>Dashboard Layout:</span>
               <select
                 value={preferences.dashboardLayout}
                 onChange={(e) => handlePreferencesChange("dashboardLayout", e.target.value)}
-                className="border px-2 py-1 rounded-lg"
+                className="w-full border px-2 py-2 rounded-lg sm:w-auto"
               >
                 <option value="default">Default</option>
                 <option value="widgets">Widgets View</option>
@@ -247,16 +247,16 @@ export default function Setting() {
         </section>
 
         {/* Privacy & Security */}
-        <section className="bg-white p-6 rounded-xl shadow border border-gray-100 space-y-4">
+        <section className="bg-white p-4 sm:p-6 rounded-xl shadow border border-gray-100 space-y-4">
           <h2 className="text-xl font-semibold text-[#4B2C85]">Privacy & Security</h2>
 
           {/* Account Privacy */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span>Account Privacy:</span>
             <select
               value={privacy.accountPrivacy}
               onChange={(e) => setPrivacy({ ...privacy, accountPrivacy: e.target.value })}
-              className="border px-2 py-1 rounded-lg"
+              className="w-full border px-2 py-2 rounded-lg sm:w-auto"
             >
               <option value="public">Public</option>
               <option value="private">Private</option>
@@ -266,7 +266,7 @@ export default function Setting() {
           {/* Login History / Devices */}
           <div>
             <h3 className="font-semibold mt-2">Recent Devices</h3>
-            <ul className="list-disc ml-5">
+            <ul className="list-disc ml-5 space-y-1 break-words">
               {privacy.devices.map((d, idx) => (
                 <li key={idx}>
                   {d.device} – Last Active: {d.lastActive}
@@ -276,7 +276,7 @@ export default function Setting() {
           </div>
 
           {/* Data export / delete */}
-          <div className="flex gap-4 mt-2">
+          <div className="flex flex-col gap-3 mt-2 sm:flex-row sm:gap-4">
             <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:opacity-90">
               Export Data
             </button>

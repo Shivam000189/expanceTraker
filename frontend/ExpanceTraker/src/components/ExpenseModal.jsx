@@ -16,19 +16,19 @@ export default function ExpenseModal({ expense, onClose }) {
     if (!expense) return null; 
     return (
         <div
-            className={`fixed inset-0 flex justify-center items-center z-50 transition-all duration-300 ${show ? "bg-black/40 backdrop-blur-sm opacity-100" : "bg-transparent backdrop-blur-0 opacity-0"}`}
+            className={`fixed inset-0 flex justify-center items-center z-50 px-4 transition-all duration-300 ${show ? "bg-black/40 backdrop-blur-sm opacity-100" : "bg-transparent backdrop-blur-0 opacity-0"}`}
                 onClick={handleClose}
             >
             <div
-                className={`bg-white rounded-xl shadow-lg p-6 w-96 transform transition-all duration-300 
+                className={`bg-white rounded-xl shadow-lg p-5 sm:p-6 w-full max-w-sm transform transition-all duration-300 
                         ${show ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
                 onClick={(e) => e.stopPropagation()} 
             >
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center break-words">
                 {expense.title}
                 </h2>
 
-                <div className="space-y-2 text-gray-700">
+                <div className="space-y-2 text-gray-700 break-words">
                     <p>
                         <strong>Amount:</strong> ₹{expense.amount}
                     </p>

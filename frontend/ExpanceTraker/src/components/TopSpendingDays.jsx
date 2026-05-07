@@ -5,7 +5,7 @@ export default function TopSpendingDays({ expenses }) {
   const max = days[0]?.amount || 1;
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-violet-100 shadow-sm">
+    <div className="bg-white rounded-2xl p-4 sm:p-6 border border-violet-100 shadow-sm overflow-hidden">
       <h3 className="text-lg font-semibold text-violet-900">
         Top Spending Days
       </h3>
@@ -16,8 +16,8 @@ export default function TopSpendingDays({ expenses }) {
 
           return (
             <div key={i}>
-              <div className="flex justify-between text-sm mb-1">
-                <span>{d.date}</span>
+              <div className="flex flex-col gap-1 text-sm mb-1 sm:flex-row sm:justify-between">
+                <span className="break-words">{d.date}</span>
                 <span className="font-bold text-violet-800">
                   ₹{d.amount}
                 </span>
