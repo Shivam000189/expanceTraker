@@ -26,13 +26,13 @@ export default function Analytics() {
     <div className="flex min-h-screen bg-[#FDFDFF] font-nunito">
       <Sidebar />
 
-      <main className="ml-64 flex-1 p-8 space-y-6">
-        <h1 className="text-3xl font-serif text-violet-900">
+      <main className="w-full flex-1 space-y-6 px-4 py-6 pt-24 sm:px-6 md:ml-64 md:p-8">
+        <h1 className="text-2xl sm:text-3xl font-serif text-violet-900">
           Analytics
         </h1>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           <StatCard label="Total" value={`₹${total}`} sub="All time" icon="💰" accent="#7C3AED" />
           <StatCard label="Average" value={`₹${avg.toFixed(0)}`} sub="Per entry" icon="📊" accent="#A855F7" />
           <StatCard label="Entries" value={expenses.length} sub="Count" icon="🧾" accent="#6D28D9" />
@@ -40,7 +40,7 @@ export default function Analytics() {
         </div>
 
         {/* Charts */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-6">
           <CategoryBreakdown expenses={expenses} />
           <TopSpendingDays expenses={expenses} />
         </div>

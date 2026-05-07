@@ -135,21 +135,21 @@ export default function ExpenseStats({ expenses }) {
   const topCategory = Object.entries(highestCategory).sort((a, b) => b[1] - a[1])[0]?.[0];
 
   return (
-    <div className="mt-10 bg-quill-gray-100 p-6 rounded-lg shadow-md max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center text-quill-gray-900">Expense Summary</h2>
+    <div className="mt-8 sm:mt-10 bg-quill-gray-100 p-4 sm:p-6 rounded-lg shadow-md max-w-4xl mx-auto overflow-hidden">
+      <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center text-quill-gray-900">Expense Summary</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Total Spent</p>
-          <h3 className="text-xl font-bold text-gray-900">₹{totalSpent}</h3>
+          <h3 className="text-xl font-bold text-gray-900 break-words">₹{totalSpent}</h3>
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Spending Limit</p>
-          <h3 className="text-xl font-bold text-gray-900">₹{limit}</h3>
+          <h3 className="text-xl font-bold text-gray-900 break-words">₹{limit}</h3>
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-gray-500">Top Category</p>
-          <h3 className="text-xl font-bold text-gray-900">{topCategory || "N/A"}</h3>
+          <h3 className="text-xl font-bold text-gray-900 break-words">{topCategory || "N/A"}</h3>
         </div>
       </div>
 

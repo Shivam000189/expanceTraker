@@ -3,11 +3,11 @@ export default function LoadingSpinner({
   logoText = "ExpanceTracker",
 }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0B1A] gap-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0B1A] gap-8 px-4 text-center">
       
       {/* Logo */}
       <div className="relative inline-block">
-        <div className="text-[72px] md:text-[96px] font-black text-violet-600 tracking-tight select-none drop-shadow-[0_0_18px_rgba(124,58,237,0.8)]">
+        <div className="text-4xl sm:text-[72px] md:text-[96px] font-black text-violet-600 tracking-tight select-none drop-shadow-[0_0_18px_rgba(124,58,237,0.8)] break-words">
           {logoText}
         </div>
 

@@ -31,7 +31,7 @@ export default function Expenses() {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpenses(res.data);
-    } catch (err) {
+    } catch {
       toast.error("Failed to load expenses.");
     } finally {
       setLoading(false);
@@ -106,32 +106,32 @@ export default function Expenses() {
       <Sidebar />
 
       {/* Main */}
-      <main className="ml-64 flex-1 p-8 overflow-y-auto">
+      <main className="w-full flex-1 overflow-y-auto px-4 py-6 pt-24 sm:px-6 md:ml-64 md:p-8">
 
         {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-[#4B2C85]">
+        <div className="mb-8 sm:mb-10">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#4B2C85]">
             Welcome back 👋
           </h1>
           <p className="text-gray-400">Track your expenses easily</p>
-        </div>
+        </div>  
 
         {/* Balance Card */}
-        <div className="bg-[#D9D9E3] rounded-3xl p-8 mb-10">
+        <div className="bg-[#D9D9E3] rounded-2xl sm:rounded-3xl p-5 sm:p-8 mb-8 sm:mb-10">
           <p className="text-gray-500 text-sm mb-2">Total Expenses</p>
-          <h2 className="text-3xl font-bold text-[#4B2C85]">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#4B2C85] break-words">
             ₹ {total}
           </h2>
         </div>
 
         {/* Grid */}
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8">
 
           {/* Form */}
           <form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4"
+            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100 space-y-4"
           >
             <h3 className="text-xl font-semibold text-[#4B2C85]">
               {editingId ? "Edit Expense" : "Add Expense"}
@@ -188,7 +188,7 @@ export default function Expenses() {
           </form>
 
           {/* Expense List */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100 overflow-hidden">
             <h3 className="text-xl font-semibold text-[#4B2C85] mb-4">
               Recent Expenses
             </h3>
@@ -196,23 +196,23 @@ export default function Expenses() {
             {expenses.length === 0 ? (
               <p className="text-gray-400">No expenses yet</p>
             ) : (
-              <ul>
+              <ul className="space-y-2">
                 {expenses.map((exp) => (
                   <li
                     key={exp._id}
-                    className="flex justify-between items-center py-4 border-b last:border-none hover:bg-gray-50 px-2 rounded-xl"
+                    className="flex flex-col gap-3 border-b px-2 py-4 last:border-none hover:bg-gray-50 sm:flex-row sm:items-center sm:justify-between rounded-xl"
                     onClick={() => setSelectedExpense(exp)}
                   >
-                    <div>
-                      <p className="font-semibold">{exp.title}</p>
+                    <div className="min-w-0">
+                      <p className="font-semibold break-words">{exp.title}</p>
                       <p className="text-sm text-gray-400">
                         {exp.category} •{" "}
                         {new Date(exp.date).toLocaleDateString()}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="font-semibold">
+                    <div className="flex items-center justify-between gap-3 sm:justify-end">
+                      <span className="font-semibold break-words">
                         ₹{exp.amount}
                       </span>
 

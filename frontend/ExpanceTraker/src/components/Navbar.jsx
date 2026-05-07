@@ -20,15 +20,15 @@ export const Navbar = ({ onLogin, onSignup }) => {
         : "bg-transparent border-b border-transparent"
     }`}
 >
-      <div className="max-w-[1100px] mx-auto px-6">
+      <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center h-[72px]">
           
           {/* Logo */}
-          <div className="flex items-center gap-3 cursor-pointer">
+          <div className="flex items-center gap-3 cursor-pointer min-w-0">
             <div className="w-7 h-7 border border-gray-300 flex items-center justify-center rounded-sm">
               <div className="w-2.5 h-2.5 bg-[#4B2C85] rounded-sm" />
             </div>
-            <span className="font-serif text-xl font-bold text-[#4B2C85] tracking-tight">
+            <span className="font-serif text-lg sm:text-xl font-bold text-[#4B2C85] tracking-tight">
               FinTrackr
             </span>
           </div>
@@ -66,7 +66,7 @@ export const Navbar = ({ onLogin, onSignup }) => {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="bg-white border-t border-gray-200 px-6 pb-8 pt-2 animate-slideDown">
+        <div className="bg-white border-t border-gray-200 px-4 sm:px-6 pb-8 pt-2 animate-slideDown">
           <a href="#" className="mobile-link">Product</a>
           <a href="#features" className="mobile-link">Features</a>
           <a href="#" className="mobile-link">Pricing</a>
