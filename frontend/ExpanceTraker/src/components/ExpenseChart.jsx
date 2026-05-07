@@ -7,7 +7,7 @@ export default function ExpenseChart({ data }) {
 
     const chartData = data.reduce((acc, exp)=> {
         const category = exp.category;
-        const amount = exp.amount;
+        const amount = Number(exp.amount);
         const existing = acc.find(item => item.category === category);
         if(existing) existing.amount += amount;
         else acc.push({category, amount});
@@ -16,9 +16,9 @@ export default function ExpenseChart({ data }) {
 
     
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md mt-8">
-            <h3 className="text-xl font-semibold mb-4 text-center">Monthly Spending Overview</h3>
-            <ResponsiveContainer width="100%" height={300}>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-6 sm:mt-8 overflow-hidden">
+            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-center">Monthly Spending Overview</h3>
+            <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="category" />
