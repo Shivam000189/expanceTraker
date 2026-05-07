@@ -1,5 +1,5 @@
 
-# 💰 Expense Tracker
+#  Expense Tracker
 
 A full-stack web application to track, visualize, and manage your daily expenses. Built with React, Node.js, Express, and MongoDB.
 
@@ -9,18 +9,18 @@ A full-stack web application to track, visualize, and manage your daily expenses
 
 ## 📋 Features
 
-- ✅ **User Authentication** - Secure signup/login with JWT tokens and password hashing
-- 📊 **Dashboard** - Real-time expense overview with statistics and insights
-- 📈 **Analytics** - Interactive charts and expense breakdowns by category
-- ➕ **Add/Edit Expenses** - Easy-to-use modal for expense management
-- 🎯 **Category Tracking** - Organize expenses by different categories
-- 📱 **Responsive Design** - Works seamlessly on desktop and mobile devices
-- 🔒 **Protected Routes** - Secure pages only accessible to authenticated users
-- ⚡ **Real-time Updates** - Instant data synchronization across the app
+-  **User Authentication** - Secure signup/login with JWT tokens and password hashing
+-  **Dashboard** - Real-time expense overview with statistics and insights
+-  **Analytics** - Interactive charts and expense breakdowns by category
+-  **Add/Edit Expenses** - Easy-to-use modal for expense management
+-  **Category Tracking** - Organize expenses by different categories
+-  **Responsive Design** - Works seamlessly on desktop and mobile devices
+-  **Protected Routes** - Secure pages only accessible to authenticated users
+-  **Real-time Updates** - Instant data synchronization across the app
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **React 18** with Vite (fast development server)
@@ -40,7 +40,7 @@ A full-stack web application to track, visualize, and manage your daily expenses
 
 ---
 
-## 📦 Prerequisites
+##  Prerequisites
 
 Before you begin, ensure you have the following installed:
 - **Node.js** (v14 or higher)
@@ -50,7 +50,7 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### 1. Clone the Repository
 ```bash
@@ -90,7 +90,7 @@ VITE_API_URL=http://localhost:5000/api
 
 ---
 
-## ▶️ Running the Application
+##  Running the Application
 
 ### Start Backend Server
 ```bash
@@ -182,7 +182,7 @@ expance-tracker/
 
 ---
 
-## 🔐 Security Features
+##  Security Features
 
 - **Password Hashing** - Passwords are hashed using bcryptjs
 - **JWT Authentication** - Secure token-based authentication
@@ -191,7 +191,7 @@ expance-tracker/
 
 ---
 
-## 📝 Git Best Practices
+##  Git Best Practices
 
 Make sure to add these to `.gitignore` to avoid pushing sensitive files:
 
@@ -205,7 +205,7 @@ dist/
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Feel free to:
 1. Fork the repository
