@@ -1,185 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-/* @import url("https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&display=swap"); */
-@custom-variant dark (&:where(.dark, .dark *));
-
-
-.istok-web-regular {
-  font-family: "Istok Web", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.istok-web-bold {
-  font-family: "Istok Web", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.istok-web-regular-italic {
-  font-family: "Istok Web", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.istok-web-bold-italic {
-  font-family: "Istok Web", sans-serif;
-  font-weight: 700;
-  font-style: italic;
-}
-
-
 
 @theme {
-  
-  --color-nile-blue-50: #f4f7fb;
-  --color-nile-blue-100: #e9edf5;
-  --color-nile-blue-200: #cedae9;
-  --color-nile-blue-300: #a3bbd6;
-  --color-nile-blue-400: #7196bf;
-  --color-nile-blue-500: #4f79a8;
-  --color-nile-blue-600: #3c608d;
-  --color-nile-blue-700: #324d72;
-  --color-nile-blue-800: #2c4360;
-  --color-nile-blue-900: #27374d;
-  --color-nile-blue-950: #1b2536;
-
-
-
-
-  --color-masala-50: #f6f5f5;
-  --color-masala-100: #e8e6e5;
-  --color-masala-200: #d3cfce;
-  --color-masala-300: #b4adac;
-  --color-masala-400: #8d8483;
-  --color-masala-500: #726968;
-  --color-masala-600: #615a59;
-  --color-masala-700: #524d4c;
-  --color-masala-800: #474443;
-  --color-masala-900: #423f3e;
-  --color-masala-950: #272525;
-
-
-
-  --color-quill-gray-50: #f7f7f7;
-  --color-quill-gray-100: #ededec;
-  --color-quill-gray-200: #dfdfde;
-  --color-quill-gray-300: #cdcdcc;
-  --color-quill-gray-400: #aeaeac;
-  --color-quill-gray-500: #999998;
-  --color-quill-gray-600: #898987;
-  --color-quill-gray-700: #7b7b7a;
-  --color-quill-gray-800: #676766;
-  --color-quill-gray-900: #555553;
-  --color-quill-gray-950: #363635;
-
-
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --color-expance-dark: #1a1617;
-  --color-expance-orange: #ff4b2b;
-  --color-expance-red: #ff416c;
-
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary: #10B981;
+  --color-primary-dark: #059669;
+  --color-surface-dark: #111827;
+  --color-background: #F9FAFB;
 }
 
-body {
-  @apply font-sans antialiased bg-stone-100;
-}
-
-.nav-link {
-  @apply text-gray-600 uppercase text-xs tracking-widest;
-}
-.nav-link:hover {
-  @apply text-black;
-}
-.nav-btn-primary {
-  @apply bg-[#4B2C85] text-white px-6 py-2 uppercase text-sm tracking-widest;
-}
-
-.nav-btn-primary:hover {
-  @apply bg-[#3b226b];
-}
-
-.nav-btn-ghost {
-  @apply text-gray-600 border border-gray-300 px-6 py-2 uppercase text-sm;
-}
-.nav-btn-ghost:hover {
-  @apply text-black border-black;
-}
-
-.mobile-link {
-  @apply block py-3 border-b border-neutral-900 font-sans text-[13px] tracking-[0.12em] uppercase text-neutral-500 transition-colors;
-}
-.mobile-link:hover {
-  @apply text-[#f0ece4];
-}
-
-
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@layer base {
+  body {
+    @apply font-sans bg-background text-zinc-900 antialiased;
   }
-  a:hover {
-    color: #747bff;
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold tracking-tight;
   }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
+}
+
+.glass-morphism {
+  @apply bg-white/70 backdrop-blur-md border border-white/20;
+}
+
+.sidebar-item-active {
+  @apply bg-primary text-white shadow-lg shadow-primary/30;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+}
