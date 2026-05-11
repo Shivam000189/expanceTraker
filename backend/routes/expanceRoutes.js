@@ -9,6 +9,7 @@ const router = express.Router();
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 const toNumber = (value) => Number(value);
 const DEFAULT_CATEGORY = 'Other';
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini';
 
 const normalizeDate = (value) => {
     if (!value) return new Date().toISOString().slice(0, 10);
@@ -64,9 +65,57 @@ const extractJson = (text) => {
     return match ? JSON.parse(match[0]) : JSON.parse(text);
 };
 
+const detectWithOpenRouter = async (smsText) => {
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) {
+        throw new Error('OPENROUTER_API_KEY is missing');
+    }
+
+    const prompt = `Extract one bank transaction SMS into strict JSON only.
+Return this exact shape:
+{"amount":number,"merchant":"string","category":"Food|Travel|Shopping|Bills|Entertainment|Health|Other","type":"expense|income","paymentMethod":"string","date":"YYYY-MM-DD"}
+Use the current year when the SMS has no year. SMS: ${smsText}`;
+
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+            model: OPENROUTER_MODEL,
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You extract bank transaction SMS data into valid JSON only.',
+                },
+                {
+                    role: 'user',
+                    content: prompt,
+                },
+            ],
+            temperature: 0.1,
+            response_format: { type: 'json_object' },
+        }),
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`OpenRouter SMS detection failed (${response.status}): ${errorText}`);
+    }
+
+    const data = await response.json();
+    const text = data?.choices?.[0]?.message?.content;
+    if (!text) throw new Error('OpenRouter SMS detection returned no content');
+
+    return extractJson(text);
+};
+
 const detectWithGemini = async (smsText) => {
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) return null;
+    if (!apiKey) {
+        throw new Error('GEMINI_API_KEY is missing');
+    }
 
     const prompt = `Extract one bank transaction SMS into strict JSON only.
 Return this exact shape:
@@ -74,7 +123,7 @@ Return this exact shape:
 Use the current year when the SMS has no year. SMS: ${smsText}`;
 
     const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -86,7 +135,8 @@ Use the current year when the SMS has no year. SMS: ${smsText}`;
     );
 
     if (!response.ok) {
-        throw new Error('AI detection request failed');
+        const errorText = await response.text();
+        throw new Error(`Gemini SMS detection failed (${response.status}): ${errorText}`);
     }
 
     const data = await response.json();
@@ -94,6 +144,16 @@ Use the current year when the SMS has no year. SMS: ${smsText}`;
     if (!text) throw new Error('AI detection returned no content');
 
     return extractJson(text);
+};
+
+const detectWithAI = async (smsText) => {
+    try {
+        return await detectWithOpenRouter(smsText);
+    } catch (error) {
+        console.error('OpenRouter SMS detection failed, falling back to Gemini:', error.message);
+    }
+
+    return detectWithGemini(smsText);
 };
 
 router.use(express.json());
@@ -134,7 +194,7 @@ router.post('/detect-sms', async (req, res) => {
             return res.status(400).json({ msg: 'SMS text is required' });
         }
 
-        const aiPayload = await detectWithGemini(String(smsText));
+        const aiPayload = await detectWithAI(String(smsText));
         const detection = normalizeDetection(aiPayload, String(smsText));
 
         if (!detection.amount) {

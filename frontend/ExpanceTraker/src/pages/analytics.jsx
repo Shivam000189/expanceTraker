@@ -27,6 +27,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { formatCurrency, cn } from "../lib/utils";
+import AnalyticsAdvisorCard from "../components/AnalyticsAdvisorCard";
 
 export default function Analytics() {
   const [expenses, setExpenses] = useState([]);
@@ -300,6 +301,8 @@ export default function Analytics() {
             )}
           </div>
         </div>
+
+        <AnalyticsAdvisorCard />
 
         {/* AI Smart Forecast */}
         <div className="bg-zinc-900 rounded-2xl lg:rounded-[2.5rem] p-6 lg:p-10 shadow-2xl relative overflow-hidden text-white">

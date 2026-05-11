@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Rocket, Shield, Sparkles, Target, BarChart3, Globe, ArrowRight, MessageSquare, TrendingUp, CreditCard, Wallet } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "../lib/utils"; // You'll need to create this or remove the cn function
+import API from "../api";
+import LandingChatbot from "../components/LandingChatbot";
 
 const Main = () => {
   const navigate = useNavigate();
+  const [totalUsers, setTotalUsers] = useState(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const featuresData = [
     { title: 'AI Detection', desc: 'Auto-detect expenses from bank SMS and emails with 99% accuracy.', icon: Sparkles },
@@ -16,6 +20,20 @@ const Main = () => {
     { title: 'Bank Security', desc: 'Enterprise-grade encryption keeps your financial data ultra-safe.', icon: Shield },
     { title: 'Global Sync', desc: 'Access your finances across all your devices, anywhere in the world.', icon: Globe },
   ];
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { data } = await API.get("/auth/stats");
+        setTotalUsers(typeof data?.totalUsers === "number" ? data.totalUsers : 0);
+      } catch (error) {
+        console.error("Error fetching user stats:", error);
+        setTotalUsers(0);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="bg-white text-[#4B2C85] min-h-screen overflow-x-hidden font-serif">
@@ -50,7 +68,10 @@ const Main = () => {
                 Start Your Journey
                 <ArrowRight size={22} />
               </button>
-              <button className="w-full sm:w-auto flex items-center justify-center gap-3 font-bold text-zinc-500 hover:text-zinc-900 transition-colors group">
+              <button
+                onClick={() => setIsChatOpen(true)}
+                className="w-full sm:w-auto flex items-center justify-center gap-3 font-bold text-zinc-500 hover:text-zinc-900 transition-colors group"
+              >
                 <div className="w-12 h-12 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-zinc-50 transition-all">
                   <MessageSquare size={20} />
                 </div>
@@ -65,8 +86,10 @@ const Main = () => {
               </div>
               <div className="w-[1px] h-10 bg-zinc-200"></div>
               <div>
-                <p className="text-4xl font-bold font-display text-zinc-900">12k+</p>
-                <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mt-1">Active Users</p>
+                <p className="text-4xl font-bold font-display text-zinc-900">
+                  {totalUsers === null ? "..." : totalUsers.toLocaleString()}
+                </p>
+                <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mt-1">Registered Users</p>
               </div>
             </div>
           </div>
@@ -184,6 +207,11 @@ const Main = () => {
           <p className="text-xs font-display text-black  tracking-widest uppercase">© 2026 Spendora. Built by Shivam.</p>
         </div>
       </footer>
+
+      <LandingChatbot
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
     </div>
   );
 };

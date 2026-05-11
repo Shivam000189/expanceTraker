@@ -4,7 +4,11 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    monthlyIncome: { type: Number, default: 0, min: 0 }
+    monthlyIncome: { type: Number, default: 0, min: 0 },
+    advisorUsage: {
+        count: { type: Number, default: 0 },
+        windowStartedAt: { type: Date, default: null }
+    }
 });
 
 const User = mongoose.model('User', userSchema);
