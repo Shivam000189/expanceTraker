@@ -10,6 +10,7 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [hovered, setHovered] = useState(false);
 
   const navigate = useNavigate();
 
@@ -96,17 +97,22 @@ export default function Login() {
                     </div>
 
 
+
                     <button onClick={()=> {navigate('/signup')}} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
                         <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
                             <User size={16}/>
                         </div>
-                        Singn Up
+                        Sign Up
                     </button>
                 </div>
+    
+                {/*SignUp container */}
 
-                {/*SingUp container */}
+                
+                
 
-                <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+
+                <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full relative">
                     <h2 className="text-4xl sm:text-5xl font-bold text-[#1a1617] mb-8 sm:mb-10">Sign In</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -153,14 +159,34 @@ export default function Login() {
                             <button type="button" className="text-black font-medium hover:underline text-sm hover:cursor-pointer">Forgot password?</button>
                         </div>
 
-                        <Motion.button type="submit"  whileHover={{scale:1.02}} whileTap={{scale:0.98}} 
-                        className="w-full py-3 sm:py-4 rounded-full bg-gradient-to-r bg-primary text-white font-semibold text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-500/20 hover:shadow-primary-500/40 transition-all hover:cursor-pointer"
+                        <Motion.button
+                            type="submit"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full py-3 sm:py-4 rounded-full bg-gradient-to-r bg-primary text-white font-semibold text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-500/20 hover:shadow-primary-500/40 transition-all hover:cursor-pointer"
+                            onMouseEnter={() => setHovered(true)}
+                            onMouseLeave={() => setHovered(false)}
                         >
                             <ArrowRight size={20} />
                             Sign In
                         </Motion.button>
+
+                        {/* Tooltip */}
+                        {hovered && (
+                            <div className="absolute top-full mt-2 bg-black text-white text-sm px-3 py-1 rounded-md shadow-lg">
+                            Render takes time to load, please wait...
+                            </div>
+                        )}
                     </form>
                 </div>
+
+                <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-500">
+                        Don't have an account? 
+                        <button onClick={()=> {navigate('/signup')}} className="text-black font-medium hover:underline ml-1">Sign Up</button>
+                    </p>
+                </div>
+
 
                 {/*footer container */}
                 <div className="mt-auto pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-4">

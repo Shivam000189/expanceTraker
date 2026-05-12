@@ -12,6 +12,7 @@ export default function Signup() {
         email:"",
         password:"",
 });
+    const [hovered, setHovered] = useState(false);
 
     const navigate = useNavigate();
 
@@ -100,7 +101,7 @@ export default function Signup() {
 
                 {/*SingUp container */}
 
-                <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+                <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full relative">
                     <h2 className="text-4xl sm:text-5xl font-bold text-[#1a1617] mb-8 sm:mb-10">Sign Up</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -147,10 +148,19 @@ export default function Signup() {
 
                         <Motion.button type="submit"  whileHover={{scale:1.02}} whileTap={{scale:0.98}} 
                         className="w-full py-3 sm:py-4 rounded-full bg-gradient-to-r bg-primary text-white font-semibold text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg shadow-green-500/20 hover:shadow-primary-500/40 transition-all"
+                        onMouseEnter={() => setHovered(true)}
+                        onMouseLeave={() => setHovered(false)}
                         >
                             <ArrowRight size={20} />
                             Sign Up
                         </Motion.button>
+
+                        {/* Tooltip */}
+                        {hovered && (
+                            <div className="absolute top-full mt-2 bg-black text-white text-sm px-3 py-1 rounded-md shadow-lg">
+                            Render take time to load, please wait.... 
+                            </div>
+                        )}
                     </form>
                 </div>
 
