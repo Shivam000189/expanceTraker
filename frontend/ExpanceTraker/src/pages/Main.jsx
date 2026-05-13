@@ -51,14 +51,25 @@ const Main = () => {
               <Sparkles size={18} />
               AI-Powered Financial Freedom
             </div> */}
+            <motion.h2 
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-6xl md:text-8xl font-display font-light leading-[0.9] tracking-tighter"
+                >
+              <h1 className="text-6xl lg:text-8xl font-display font-bold tracking-tight text-zinc-900 leading-[1.05]">
+                Master your money with <span className="text-emerald-500 underline decoration-emerald-200 underline-offset-8">Precision</span>.
+              </h1>
+            </motion.h2>
+            <motion.h2 
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}>
+              <p className="text-xl text-zinc-500 max-w-lg leading-relaxed font-medium">
+                Join smart users who use Spendora to track expenses, automate savings, and build wealth with advanced AI insights.
+              </p>
+            </motion.h2>
             
-            <h1 className="text-6xl lg:text-8xl font-display font-bold tracking-tight text-zinc-900 leading-[1.05]">
-              Master your money with <span className="text-emerald-500 underline decoration-emerald-200 underline-offset-8">Precision</span>.
-            </h1>
-            
-            <p className="text-xl text-zinc-500 max-w-lg leading-relaxed font-medium">
-              Join smart users who use Spendora to track expenses, automate savings, and build wealth with advanced AI insights.
-            </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-6 pt-4">
               <button
@@ -94,7 +105,7 @@ const Main = () => {
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative" >
             <motion.div 
               initial={{ opacity: 0, scale: 0.8, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -145,23 +156,36 @@ const Main = () => {
       </section>
 
       {/* NEW FEATURES SECTION */}
-      <section className="bg-zinc-900 py-32 text-white overflow-hidden relative">
+      <section className="bg-zinc-900 py-32 text-white overflow-hidden relative" id="features">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.05),transparent)]"></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+            <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-32"
+          >
             <p className="text-emerald-500 font-bold tracking-widest uppercase text-xs">Everything you need</p>
             <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">Financial management, simplified by Intelligence.</h2>
+            </motion.div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
             {featuresData.map((feature, i) => (
-              <div key={i} className="p-10 bg-white/5 border border-white/10 rounded-[2.5rem] hover:bg-white/10 transition-all group">
+              <motion.div
+               options={{ threshold: 0.1 }}
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5, delay: i * 0.2 }}
+               key={i} className="p-10 bg-white/5 border border-white/10 rounded-[2.5rem] transition-all group ">
                 <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                   <feature.icon className="text-emerald-500" size={28} />
                 </div>
                 <h3 className="text-xl font-bold font-display mb-4">{feature.title}</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed">{feature.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -191,7 +215,7 @@ const Main = () => {
       </section> */}
 
       {/* FOOTER */}
-      <footer className="py-8 bg-white border-t border-zinc-100">
+      <footer className="py-8 bg-white border-t border-zinc-100" id="contact" > 
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center text-white">

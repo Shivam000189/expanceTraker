@@ -33,7 +33,7 @@ export const Navbar = ({ onLogin, onSignup }) => {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-10">
-          {['Features', 'Market', 'Company', 'Pricing'].map((item) => (
+          {['Features','Contact'].map((item) => (
             <a 
               key={item} 
               href={`#${item.toLowerCase()}`} 
