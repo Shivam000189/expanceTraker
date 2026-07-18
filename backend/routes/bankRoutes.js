@@ -34,6 +34,26 @@ router.get('/balance', protect, async (req, res) => {
     }
 });
 
+router.get('/recipients', protect, async (req, res) => {
+    try {
+        const userId = normalizeObjectId(getUserId(req));
+
+        if (!userId) {
+            return res.status(401).json({ message: 'User not authenticated' });
+        }
+
+        const recipients = await User.find({ _id: { $ne: userId } })
+            .select('name email')
+            .sort({ name: 1 })
+            .lean();
+
+        res.status(200).json({ recipients });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 router.post('/transfer', protect, async (req, res) => {
     const transferSchema = zod.object({
         recipientId: zod.string().trim().email('Invalid email address'),

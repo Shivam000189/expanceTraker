@@ -9,6 +9,7 @@ export default function Bank() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [topUpSubmitting, setTopUpSubmitting] = useState(false);
+  const [recipients, setRecipients] = useState([]);
   const [form, setForm] = useState({ recipientEmail: "", amount: "" });
   const [topUpForm, setTopUpForm] = useState({ amount: "" });
   const userName = localStorage.getItem("userName") || "User";
@@ -33,8 +34,18 @@ export default function Bank() {
     }
   };
 
+  const loadRecipients = async () => {
+    try {
+      const response = await API.get("/bank/recipients");
+      setRecipients(response.data?.recipients ?? []);
+    } catch (error) {
+      console.error("Failed to load recipients:", error);
+    }
+  };
+
   useEffect(() => {
     loadBalance();
+    loadRecipients();
   }, []);
 
   const handleSubmit = async (event) => {
@@ -203,14 +214,22 @@ export default function Bank() {
 
                 <div className="mt-4 space-y-4">
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-zinc-700">Recipient email</label>
-                    <input
-                      type="email"
+                    <label className="mb-2 block text-sm font-semibold text-zinc-700">Select recipient</label>
+                    <select
                       value={form.recipientEmail}
                       onChange={(event) => setForm((prev) => ({ ...prev, recipientEmail: event.target.value }))}
-                      placeholder="name@example.com"
                       className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-primary"
-                    />
+                    >
+                      <option value="">Choose a user</option>
+                      {recipients.map((recipient) => (
+                        <option key={recipient.email} value={recipient.email}>
+                          {recipient.name} — {recipient.email}
+                        </option>
+                      ))}
+                    </select>
+                    {recipients.length === 0 && (
+                      <p className="mt-2 text-sm text-zinc-500">No other users are available right now.</p>
+                    )}
                   </div>
 
                   <div>
