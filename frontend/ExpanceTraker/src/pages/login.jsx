@@ -8,16 +8,17 @@ import { ArrowRight, Eye, Globe, User, Wallet } from "lucide-react";
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
   const [hovered, setHovered] = useState(false);
-
   const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

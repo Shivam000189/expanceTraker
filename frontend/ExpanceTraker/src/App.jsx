@@ -6,6 +6,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Analytics from "./pages/analytics";
 import Main from "./pages/Main";
 import Setting from "./pages/setting";
+import StoreDashboard from "./pages/store-dashboard";
+import Settlements from "./pages/settlements";
+import BulkPayout from "./pages/bulk-payout";
+import Selete from "./pages/selete";
 
 function App() {
 
@@ -27,7 +31,10 @@ function MainRoutes() {
       <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>}/>
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
       <Route path="/setting" element={<ProtectedRoute><Setting /></ProtectedRoute>}/>
-
+      <Route path="/store-dashboard" element={<ProtectedRoute><StoreDashboard /></ProtectedRoute>}/>
+      <Route path="/settlements" element={<ProtectedRoute><Selete /></ProtectedRoute>}/>
+      {/* <Route path="/settlements" element={<ProtectedRoute><Settlements /></ProtectedRoute>}/> */}
+      <Route path="/bulk-payout" element={<ProtectedRoute><BulkPayout /></ProtectedRoute>}/>
     </Routes>
   );
 }

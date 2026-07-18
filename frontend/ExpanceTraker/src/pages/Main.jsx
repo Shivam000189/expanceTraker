@@ -216,7 +216,7 @@ const Main = () => {
           <div className="radial-dot-grid pointer-events-none absolute inset-0" />
 
           <div className="relative z-10 mx-auto max-w-4xl">
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -224,7 +224,7 @@ const Main = () => {
             >
               <span className="flex h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
               AI-powered expense command center
-            </motion.div>
+            </motion.div> */}
 
             <motion.h1
               initial={{ opacity: 0, y: 25 }}

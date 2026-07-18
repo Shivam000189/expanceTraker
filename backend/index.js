@@ -4,6 +4,8 @@ const express = require('express');
 const mongoose = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const expanceRoutes = require('./routes/expanceRoutes');
+const settlementRoutes = require('./routes/settlementRoutes');
+const payoutRoutes = require('./routes/payoutRoutes');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
@@ -55,7 +57,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Security headers
+//  Security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
@@ -63,16 +65,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ API Routes
+//  API Routes
 app.use('/auth', authRoutes);
 app.use('/expenses', expanceRoutes);
+app.use('/settlements', settlementRoutes);
+app.use('/payouts', payoutRoutes);
 
-// ✅ Health check endpoint
+//  Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// ✅ Root endpoint
+//  Root endpoint
 app.get('/', (req, res) => {
   res.json({
     message: 'Expense Tracker API is running...',
@@ -81,7 +85,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// ✅ Token verification endpoint
+//  Token verification endpoint
 app.get("/verify-token", (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ valid: false, message: "No token provided" });
@@ -101,7 +105,7 @@ app.get("/verify-token", (req, res) => {
   }
 });
 
-// ✅ Error handling middleware
+//  Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
@@ -110,12 +114,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ✅ 404 handler
+//  404 handler
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// ✅ Start server
+//  Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${NODE_ENV} mode`);
 });
