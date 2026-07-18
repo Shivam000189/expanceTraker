@@ -11,6 +11,8 @@ export default function Bank() {
   const [topUpSubmitting, setTopUpSubmitting] = useState(false);
   const [form, setForm] = useState({ recipientEmail: "", amount: "" });
   const [topUpForm, setTopUpForm] = useState({ amount: "" });
+  const userName = localStorage.getItem("userName") || "User";
+  const userEmail = localStorage.getItem("userEmail") || "No email linked";
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("en-IN", {
@@ -123,7 +125,12 @@ export default function Bank() {
             </div>
 
             <div className="mt-6 rounded-[1.5rem] bg-zinc-50 p-5">
-              <div className="flex items-center justify-between text-sm text-zinc-500">
+              <div className="rounded-[1.25rem] border border-zinc-200 bg-white p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Signed in as</p>
+                <p className="mt-1 text-base font-semibold text-zinc-900">{userName}</p>
+                <p className="text-sm text-zinc-500">{userEmail}</p>
+              </div>
+              <div className="mt-4 flex items-center justify-between text-sm text-zinc-500">
                 <span>Current balance</span>
                 <span className="font-semibold text-zinc-900">{loading ? "Loading..." : formatCurrency(balance)}</span>
               </div>
