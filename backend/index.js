@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const expanceRoutes = require('./routes/expanceRoutes');
 const settlementRoutes = require('./routes/settlementRoutes');
 const payoutRoutes = require('./routes/payoutRoutes');
+const bankRoutes = require('./routes/bankRoutes');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const path = require('path');
@@ -70,6 +71,7 @@ app.use('/auth', authRoutes);
 app.use('/expenses', expanceRoutes);
 app.use('/settlements', settlementRoutes);
 app.use('/payouts', payoutRoutes);
+app.use('/bank', bankRoutes);
 
 //  Health check endpoint
 app.get('/health', (req, res) => {

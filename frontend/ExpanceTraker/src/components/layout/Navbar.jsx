@@ -20,6 +20,7 @@ import API from '../../api'
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/expenses' },
   { icon: Store, label: 'Store', path: '/store-dashboard' },
+  { icon: Landmark, label: 'Bank', path: '/bank' },
   { icon: Landmark, label: 'Settlements', path: '/settlements' },
   { icon: CircleDollarSign, label: 'Bulk Payout', path: '/bulk-payout' },
   { icon: BarChart3, label: 'Analytics', path: '/analytics' },
