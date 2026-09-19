@@ -1,0 +1,9 @@
+{
+  "project": "expance-tracker",
+  "version": "1.0.0",
+  "mode": "brownfield",
+  "workflow": {
+    "auto_commit": false,
+    "verify_steps": true
+  }
+}

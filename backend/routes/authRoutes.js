@@ -12,6 +12,18 @@ if (!SECRET_KEY) {
 }
 
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        message: 'Too many attempts. Please try again in 15 minutes.',
+        msg: 'Too many attempts. Please try again in 15 minutes.'
+    }
+});
 const ADVISOR_MAX_USER_MESSAGES = 5;
 const AUTHENTICATED_ADVISOR_LIMIT = 10;
 const AUTHENTICATED_ADVISOR_WINDOW_MS = 12 * 60 * 60 * 1000;
@@ -394,72 +406,96 @@ router.post('/advisor-chat', async (req, res) => {
     }
 });
 
-router.post("/register", async (req, res) => {
-    try{
-        const {name, email, password} = req.body;
+const handleRegister = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            return res.status(400).json({ msg: "All fields are required" });
+            return res.status(400).json({
+                message: 'All fields are required',
+                msg: 'All fields are required'
+            });
         }
-        
-        const existingUser = await User.findOne({ email });
+
+        const normalizedEmail = String(email).trim().toLowerCase();
+        const existingUser = await User.findOne({ email: normalizedEmail });
         if (existingUser) {
-            return res.status(400).json({ msg: "Email already exists" });
+            return res.status(400).json({
+                message: 'Email already exists',
+                msg: 'Email already exists'
+            });
         }
-        
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+
         await User.create({
-            name,
-            email,
-            password:hashedPassword,
+            name: String(name).trim(),
+            email: normalizedEmail,
+            password: hashedPassword,
             monthlyIncome: 0
-        })
-        res.status(201).json({ msg: 'User registered successfully' });
-    } catch(error){
-        console.error("Error during Registeration:", error);
-        res.status(500).json({msg:"Server error, please try again later"});
+        });
+
+        return res.status(201).json({
+            message: 'User registered successfully',
+            msg: 'User registered successfully'
+        });
+    } catch (error) {
+        console.error('Error during registration:', error);
+        return res.status(500).json({
+            message: 'Server error, please try again later',
+            msg: 'Server error, please try again later'
+        });
     }
-    } )
-    
+};
 
+router.post('/register', authLimiter, handleRegister);
+router.post('/signup', authLimiter, handleRegister);
 
+router.post('/login', authLimiter, async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-
-router.post('/login', async (req, res)=> {
-    try{
-
-        const {email, password} = req.body;
-        
-        if(!email || !password){
-            return res.status(400).json({ msg: "All fields are required" });
+        if (!email || !password) {
+            return res.status(400).json({
+                message: 'All fields are required',
+                msg: 'All fields are required'
+            });
         }
-        
-        const user = await User.findOne({email});
-        if(!user){
-            return res.status(401).json({ msg: "Invalid email or password" });
-        }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch){
+
+        const normalizedEmail = String(email).trim().toLowerCase();
+        const user = await User.findOne({ email: normalizedEmail });
+        if (!user) {
             return res.status(401).json({
-                msg:"Invalid email or password",
-            })
+                message: 'Invalid email or password',
+                msg: 'Invalid email or password'
+            });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                message: 'Invalid email or password',
+                msg: 'Invalid email or password'
+            });
         }
 
         if (!SECRET_KEY) {
             console.error('Missing SECRET_KEY environment variable');
-            return res.status(500).json({ msg: 'Server configuration error' });
+            return res.status(500).json({
+                message: 'Server configuration error',
+                msg: 'Server configuration error'
+            });
         }
 
         const token = jwt.sign(
-            {userId : user._id, email: user.email},
+            { userId: user._id, email: user.email },
             SECRET_KEY,
-            {expiresIn:'1h'}
+            { expiresIn: '1h' }
         );
 
-
-        res.status(200).json({
-            msg:"Login Successfully",
-            token:token,
+        return res.status(200).json({
+            message: 'Login Successfully',
+            msg: 'Login Successfully',
+            token: token,
             user: {
                 name: user.name,
                 email: user.email,
@@ -467,14 +503,14 @@ router.post('/login', async (req, res)=> {
                 monthlyIncome: user.monthlyIncome || 0
             }
         });
-    }catch(error){
-        console.error("Error during login:", error);
-        res.status(500).json({
-            msg:"there is something Problem",
-        })
+    } catch (error) {
+        console.error('Error during login:', error);
+        return res.status(500).json({
+            message: 'Server error, please try again later',
+            msg: 'Server error, please try again later'
+        });
     }
-
-})
+});
 
 
 

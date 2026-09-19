@@ -33,3 +33,74 @@ export function groupByDay(expenses) {
     .sort((a, b) => b.amount - a.amount)
     .slice(0, 5);
 }
+
+export function calculateRunRateForecast(expenses = [], monthlyIncome = 0, referenceDate = new Date()) {
+  const targetYear = referenceDate.getFullYear();
+  const targetMonth = referenceDate.getMonth();
+  const daysElapsed = referenceDate.getDate();
+  const daysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+
+  const currentMonthExpenses = expenses.filter((e) => {
+    if (!e.date) return false;
+    const d = new Date(e.date);
+    return d.getFullYear() === targetYear && d.getMonth() === targetMonth;
+  });
+
+  const spentSoFar = currentMonthExpenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+  const dailyRunRate = daysElapsed > 0 ? spentSoFar / daysElapsed : 0;
+  const projectedMonthEnd = Math.round(dailyRunRate * daysInMonth);
+
+  let riskLevel = 'on-track';
+  const income = Number(monthlyIncome) || 0;
+
+  if (income > 0) {
+    if (projectedMonthEnd > income) {
+      riskLevel = 'over-budget';
+    } else if (projectedMonthEnd > income * 0.85) {
+      riskLevel = 'near-budget';
+    }
+  }
+
+  return {
+    spentSoFar,
+    daysElapsed,
+    daysInMonth,
+    dailyRunRate: Math.round(dailyRunRate),
+    projectedMonthEnd,
+    monthlyIncome: income,
+    projectedSavings: Math.max(0, income - projectedMonthEnd),
+    riskLevel,
+  };
+}
+
+export function getBudgetThresholdStatus(spent = 0, limit = 0) {
+  const numericLimit = Number(limit) || 0;
+  const numericSpent = Number(spent) || 0;
+
+  if (numericLimit <= 0) {
+    return { status: 'none', percentage: 0, badgeColor: 'bg-zinc-100 text-zinc-600' };
+  }
+
+  const percentage = Math.round((numericSpent / numericLimit) * 100);
+
+  if (percentage >= 100) {
+    return { status: 'exceeded', percentage, badgeColor: 'bg-red-100 text-red-700' };
+  }
+  if (percentage >= 75) {
+    return { status: 'warning', percentage, badgeColor: 'bg-amber-100 text-amber-700' };
+  }
+  return { status: 'safe', percentage, badgeColor: 'bg-emerald-100 text-emerald-700' };
+}
+
+export function generateExpensesCsv(expenses = []) {
+  const headers = ['Date', 'Title', 'Category', 'Amount'];
+  const rows = expenses.map((e) => {
+    const date = e.date ? new Date(e.date).toISOString().slice(0, 10) : '';
+    const title = `"${String(e.title || '').replace(/"/g, '""')}"`;
+    const category = `"${String(e.category || 'Other').replace(/"/g, '""')}"`;
+    const amount = Number(e.amount || 0);
+    return [date, title, category, amount].join(',');
+  });
+
+  return [headers.join(','), ...rows].join('\n');
+}

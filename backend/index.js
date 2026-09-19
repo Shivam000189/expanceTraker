@@ -121,7 +121,11 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-//  Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${NODE_ENV} mode`);
-});
+//  Start server if executed directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} in ${NODE_ENV} mode`);
+  });
+}
+
+module.exports = app;
