@@ -98,164 +98,185 @@ export default function Bank() {
   };
 
   return (
-    <Layout>
-      <div className="space-y-6 lg:space-y-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <Layout contentClassName="px-4 py-4 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+      <div className="flex flex-col gap-4">
+        {/* Header Ribbon in Single Frame */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3 shadow-sm backdrop-blur-sm">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-primary">
-              <Sparkles size={12} />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-300">
+              <Sparkles size={11} />
               Bank Center
             </div>
-            <h1 className="mt-3 text-3xl font-bold text-zinc-900">Manage your balance and transfer securely</h1>
-            <p className="mt-2 max-w-2xl text-sm text-zinc-600">
-              Send money to another user using their email and keep your wallet activity in one polished workspace.
-            </p>
+            <h1 className="text-lg font-bold font-display text-white tracking-tight mt-1">Wallet & Funds Transfer</h1>
+            <p className="text-[11px] text-zinc-400">Manage your available balance and transfer securely</p>
           </div>
 
-          <div className="rounded-[1.5rem] border border-zinc-200 bg-white px-4 py-3 shadow-sm">
-            <p className="text-sm text-zinc-500">Available balance</p>
-            <div className="mt-1 flex items-center gap-2">
-              <Landmark className="h-5 w-5 text-primary" />
-              <span className="text-2xl font-semibold text-zinc-900">
+          <div className="flex items-center gap-3 rounded-xl border border-zinc-800/80 bg-zinc-950/80 px-4 py-2 self-start sm:self-auto">
+            <Landmark className="h-5 w-5 text-zinc-400" />
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Available balance</p>
+              <p className="font-mono text-xl font-bold text-emerald-400">
                 {loading ? "Loading..." : formatCurrency(balance)}
-              </span>
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-sm">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Wallet overview</p>
-                <h2 className="mt-2 text-xl font-semibold text-zinc-900">Your primary account</h2>
+        {/* 3-Column Single-Frame Bento Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+          {/* Col 1: Wallet Overview */}
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400">Account Details</p>
+                  <h2 className="mt-0.5 text-base font-bold text-white">Primary Account</h2>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-white/5 p-2 text-zinc-300">
+                  <Landmark size={18} />
+                </div>
               </div>
-              <div className="rounded-2xl bg-primary/10 p-3 text-primary">
-                <Landmark size={20} />
+
+              <div className="rounded-xl border border-zinc-800 bg-zinc-950/70 p-4 space-y-3">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-zinc-500">Signed In As</p>
+                  <p className="text-sm font-semibold text-white mt-0.5">{userName}</p>
+                  <p className="text-xs text-zinc-400">{userEmail}</p>
+                </div>
+
+                <div className="border-t border-zinc-800/80 pt-3 flex items-center justify-between text-xs">
+                  <span className="text-zinc-400">Wallet Status</span>
+                  <span className="inline-flex items-center gap-1 rounded border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] font-bold text-emerald-400">
+                    Active
+                  </span>
+                </div>
+
+                <div className="border-t border-zinc-800/80 pt-3 flex items-center justify-between text-xs">
+                  <span className="text-zinc-400">Current Balance</span>
+                  <span className="font-mono font-bold text-emerald-400">{loading ? "..." : formatCurrency(balance)}</span>
+                </div>
               </div>
             </div>
 
-            <div className="mt-6 rounded-[1.5rem] bg-zinc-50 p-5">
-              <div className="rounded-[1.25rem] border border-zinc-200 bg-white p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Signed in as</p>
-                <p className="mt-1 text-base font-semibold text-zinc-900">{userName}</p>
-                <p className="text-sm text-zinc-500">{userEmail}</p>
-              </div>
-              <div className="mt-4 flex items-center justify-between text-sm text-zinc-500">
-                <span>Current balance</span>
-                <span className="font-semibold text-zinc-900">{loading ? "Loading..." : formatCurrency(balance)}</span>
-              </div>
-              <div className="mt-4 h-2 rounded-full bg-zinc-200">
-                <div className="h-2 w-full rounded-full bg-primary" />
-              </div>
-              <div className="mt-4 flex items-center gap-2 text-sm text-zinc-600">
-                <ShieldCheck size={16} className="text-primary" />
-                Transfers are protected with your authenticated session.
-              </div>
+            <div className="mt-4 flex items-center gap-2 text-xs text-zinc-400 bg-zinc-950/40 p-3 rounded-xl border border-zinc-800/60">
+              <ShieldCheck size={16} className="text-zinc-400 shrink-0" />
+              <span className="text-[11px]">Transfers protected with encrypted session.</span>
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-primary/10 p-3 text-primary">
-                <ArrowRightLeft size={20} />
-              </div>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Wallet actions</p>
-                <h2 className="text-xl font-semibold text-zinc-900">Top up or send money instantly</h2>
-              </div>
-            </div>
-
-            <div className="mt-6 space-y-5">
-              <form onSubmit={handleAddBalance} className="rounded-[1.5rem] border border-zinc-200 bg-zinc-50 p-4">
-                <div className="flex items-center gap-2">
-                  <div className="rounded-2xl bg-primary/10 p-2 text-primary">
-                    <PlusCircle size={18} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-zinc-900">Add balance</p>
-                    <p className="text-sm text-zinc-500">Increase your wallet with a quick top-up.</p>
-                  </div>
+          {/* Col 2: Add Balance Form (with green Add button) */}
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-400">
+                  <PlusCircle size={18} />
                 </div>
+                <div>
+                  <h2 className="text-base font-bold text-white">Add Balance</h2>
+                  <p className="text-[11px] text-zinc-400">Top-up wallet funds instantly</p>
+                </div>
+              </div>
 
-                <div className="mt-4">
-                  <label className="mb-2 block text-sm font-semibold text-zinc-700">Amount</label>
+              <form onSubmit={handleAddBalance} className="space-y-4">
+                <div>
+                  <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400">Amount (₹)</label>
                   <input
                     type="number"
                     min="1"
                     step="1"
                     value={topUpForm.amount}
                     onChange={(event) => setTopUpForm((prev) => ({ ...prev, amount: event.target.value }))}
-                    placeholder="1000"
-                    className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-primary"
+                    placeholder="e.g. 1000"
+                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 font-mono text-sm text-white placeholder:text-zinc-500 outline-none transition focus:border-zinc-500 focus:ring-1 focus:ring-white/20"
                   />
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {[500, 1000, 2500, 5000].map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => setTopUpForm({ amount: String(amt) })}
+                      className="px-2.5 py-1 rounded-lg border border-zinc-800 bg-zinc-950 text-xs font-mono text-zinc-300 hover:border-zinc-700 hover:text-white transition"
+                    >
+                      +₹{amt}
+                    </button>
+                  ))}
                 </div>
 
                 <button
                   type="submit"
                   disabled={topUpSubmitting}
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-70"
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-black shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <PlusCircle size={16} />
-                  {topUpSubmitting ? "Adding..." : "Add balance"}
+                  {topUpSubmitting ? "Adding..." : "Add Balance"}
                 </button>
               </form>
+            </div>
 
-              <form onSubmit={handleSubmit} className="rounded-[1.5rem] border border-zinc-200 bg-zinc-50 p-4">
-                <div className="flex items-center gap-2">
-                  <div className="rounded-2xl bg-primary/10 p-2 text-primary">
-                    <ArrowRightLeft size={18} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-zinc-900">Transfer funds</p>
-                    <p className="text-sm text-zinc-500">Send money to another account by email.</p>
-                  </div>
+            <p className="mt-4 text-[10px] text-zinc-500 text-center">
+              Funds are instantly credited to your Spendora account.
+            </p>
+          </div>
+
+          {/* Col 3: Transfer Funds Form */}
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-5 shadow-sm backdrop-blur-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="rounded-lg border border-white/10 bg-white/5 p-2 text-zinc-300">
+                  <ArrowRightLeft size={18} />
                 </div>
+                <div>
+                  <h2 className="text-base font-bold text-white">Transfer Funds</h2>
+                  <p className="text-[11px] text-zinc-400">Send money to any user by email</p>
+                </div>
+              </div>
 
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-zinc-700">Select recipient</label>
-                    <select
-                      value={form.recipientEmail}
-                      onChange={(event) => setForm((prev) => ({ ...prev, recipientEmail: event.target.value }))}
-                      className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-primary"
-                    >
-                      <option value="">Choose a user</option>
-                      {recipients.map((recipient) => (
-                        <option key={recipient.email} value={recipient.email}>
-                          {recipient.name} — {recipient.email}
-                        </option>
-                      ))}
-                    </select>
-                    {recipients.length === 0 && (
-                      <p className="mt-2 text-sm text-zinc-500">No other users are available right now.</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-zinc-700">Amount</label>
-                    <input
-                      type="number"
-                      min="1"
-                      step="1"
-                      value={form.amount}
-                      onChange={(event) => setForm((prev) => ({ ...prev, amount: event.target.value }))}
-                      placeholder="500"
-                      className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-primary"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-70"
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-zinc-400">Recipient</label>
+                  <select
+                    value={form.recipientEmail}
+                    onChange={(event) => setForm((prev) => ({ ...prev, recipientEmail: event.target.value }))}
+                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2 text-xs text-white outline-none transition focus:border-zinc-500 focus:ring-1 focus:ring-white/20"
                   >
-                    <ArrowRightLeft size={16} />
-                    {submitting ? "Processing..." : "Transfer now"}
-                  </button>
+                    <option value="" className="bg-zinc-900 text-zinc-400">Choose recipient</option>
+                    {recipients.map((recipient) => (
+                      <option key={recipient.email} value={recipient.email} className="bg-zinc-900 text-white">
+                        {recipient.name} ({recipient.email})
+                      </option>
+                    ))}
+                  </select>
                 </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-zinc-400">Amount (₹)</label>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={form.amount}
+                    onChange={(event) => setForm((prev) => ({ ...prev, amount: event.target.value }))}
+                    placeholder="e.g. 500"
+                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2 font-mono text-sm text-white placeholder:text-zinc-500 outline-none transition focus:border-zinc-500 focus:ring-1 focus:ring-white/20"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black shadow-sm transition hover:bg-zinc-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <ArrowRightLeft size={16} />
+                  {submitting ? "Processing..." : "Transfer Now"}
+                </button>
               </form>
             </div>
+
+            <p className="mt-4 text-[10px] text-zinc-500 text-center">
+              Direct peer-to-peer authenticated ledger transfer.
+            </p>
           </div>
         </div>
       </div>

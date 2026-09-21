@@ -130,87 +130,84 @@ export default function Dashboard() {
   return (
     <Layout>
       <div className="space-y-8">
-        {/* Header */}
+        {/* Header (60% Black, 30% White, 10% Green on Total Balance) */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold font-display text-zinc-900">
+            <h1 className="text-2xl sm:text-3xl font-bold font-display text-white">
               Good Morning, {localStorage.getItem('userName') || 'User'}
             </h1>
-            <p className="text-zinc-500 mt-1">
-              Today's expense balance is <span className="text-primary font-bold">{formatCurrency(totalBalance)}</span>
+            <p className="text-zinc-400 text-sm mt-1">
+              Today's expense balance is <span className="text-emerald-400 font-bold font-mono">{formatCurrency(totalBalance)}</span>
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {/* <div className="bg-white px-4 py-2 rounded-2xl border border-zinc-100 shadow-sm flex items-center gap-2 text-sm font-bold text-zinc-600">
-              <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-              Live Feed
-            </div> */}
             <button 
               onClick={() => setIsFormOpen(true)}
-              className="bg-primary text-white font-bold px-6 py-3 rounded-2xl flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/30 active:scale-95"
+              className="bg-emerald-500 text-black font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2 hover:bg-emerald-400 active:scale-95 shadow-lg shadow-emerald-500/20 transition text-sm"
             >
-              <Plus size={18} />
+              <Plus size={16} />
               Add Expense
             </button>
           </div>
         </div>
 
-        {/* Stat Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Stat Cards: Emerald reserved ONLY for the 1 major metric (Total Balance) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <StatCard 
+            index={0}
             title="Total Balance" 
             value={formatCurrency(totalBalance)} 
             change={`${balancePercent}%`} 
             trend="up" 
             icon={Wallet} 
-            color="primary" 
+            color="emerald" 
           />
           <StatCard 
+            index={1}
             title="Monthly Income" 
             value={formatCurrency(monthlyIncome)} 
             change="+0.0%" 
             trend="up" 
             icon={ArrowUpRight} 
-            color="blue" 
+            color="neutral" 
           />
           <StatCard 
+            index={2}
             title="Total Expense" 
             value={formatCurrency(totalExpense)} 
             change={`+${expensePercent}%`} 
             trend="down" 
             icon={ArrowDownRight} 
-            color="orange" 
+            color="danger" 
           />
           <StatCard 
+            index={3}
             title="Avg. Transaction" 
             value={formatCurrency(averageTransaction)} 
             change={`${expenses.length} transactions`} 
             trend="up" 
             icon={CreditCard} 
-            color="purple" 
+            color="neutral" 
           />
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-          <div className="xl:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+          <div className="xl:col-span-2 space-y-6 lg:space-y-8">
             {/* SMS Detector and Upgrade Card */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <SMSDetector onDetect={handleSMSDetect} />
-              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-zinc-100 flex flex-col justify-between relative overflow-hidden group">
-                {/* <div className="absolute top-0 right-0 p-8 opacity-5 -rotate-12 group-hover:rotate-0 transition-transform duration-500">
-                  <Sparkles size={120} className="text-primary" />
-                </div> */}
+              <div className="bg-zinc-900/90 rounded-2xl p-6 shadow-sm border border-zinc-800 flex flex-col justify-between relative overflow-hidden backdrop-blur-sm">
                 <div>
-                  <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center mb-6 text-white shadow-xl">
-                    <Sparkles size={24} />
+                  <div className="w-10 h-10 border border-white/10 bg-white/5 rounded-xl flex items-center justify-center mb-5 text-zinc-300">
+                    <Sparkles size={18} />
                   </div>
-                  <h3 className="text-xl font-bold font-display mb-2">Upgrade to Pro</h3>
-                  <p className="text-zinc-500 text-sm mb-6 leading-relaxed">
+                  <h3 className="text-lg font-bold font-display text-white mb-1.5">Upgrade to Pro</h3>
+                  <p className="text-zinc-400 text-xs mb-6 leading-relaxed">
                     Get advanced analytics, budgeting tools, and expense predictions.
                   </p>
                 </div>
-                <button className="w-full py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+                <button className="w-full py-2.5 border border-white/20 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition active:scale-95 text-xs">
                   Upgrade Now
                 </button>
               </div>
@@ -225,53 +222,60 @@ export default function Dashboard() {
           </div>
 
           {/* Spending Card - Sidebar */}
-          <div className="space-y-8 text-white">
-            <div className="bg-surface-dark rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden">
-               <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-primary/20 rounded-full blur-[80px]"></div>
-               <div className="relative z-10">
-                 <div className="flex justify-between items-center mb-10">
-                   <p className="text-sm font-medium text-zinc-400">My Spending Card</p>
-                   <CreditCard size={24} className="text-primary" />
-                 </div>
-                 <div className="space-y-6 mb-10">
-                   <h2 className="text-4xl font-bold font-display tracking-tight leading-none">
-                     {formatCurrency(totalExpense)}
-                   </h2>
-                   <div className="flex items-center gap-4">
-                     <p className="text-sm font-mono text-zinc-400">5432 •••• •••• 9801</p>
-                     <span className="text-[10px] font-bold bg-white/10 px-2 py-0.5 rounded border border-white/10 uppercase tracking-widest text-zinc-400">
-                       Visa
-                     </span>
-                   </div>
-                 </div>
-                 <div className="flex justify-between items-end">
-                   <div>
-                     <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Card Holder</p>
-                     <p className="font-bold font-display">{(localStorage.getItem('userName') || 'USER').toUpperCase()}</p>
-                   </div>
-                   <div className="text-right">
-                     <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Limit</p>
-                     <p className="font-bold font-mono">{formatCurrency(monthlyIncome)}</p>
-                   </div>
-                 </div>
-               </div>
-            </div>
+          <div className="space-y-6 text-white">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="rounded-2xl border border-zinc-800 bg-zinc-900/95 p-7 shadow-xl relative overflow-hidden backdrop-blur-xl"
+            >
+              <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-white/[0.02] rounded-full blur-[80px]"></div>
+              <div className="relative z-10">
+                <div className="flex justify-between items-center mb-8">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Spending Card</span>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-300">
+                    <CreditCard size={16} />
+                  </div>
+                </div>
+                <div className="space-y-4 mb-8">
+                  <h2 className="text-3xl sm:text-4xl font-bold font-display tracking-tight leading-none text-white">
+                    {formatCurrency(totalExpense)}
+                  </h2>
+                  <div className="flex items-center gap-3">
+                    <p className="text-xs font-mono text-zinc-400 tracking-wider">5432 •••• •••• 9801</p>
+                    <span className="text-[10px] font-bold bg-white/10 px-2 py-0.5 rounded border border-white/10 uppercase tracking-widest text-zinc-300 font-mono">
+                      Visa
+                    </span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-end border-t border-zinc-800 pt-4">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-0.5">Card Holder</p>
+                    <p className="font-bold text-xs font-display text-white">{(localStorage.getItem('userName') || 'USER').toUpperCase()}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-0.5">Limit</p>
+                    <p className="font-bold text-xs font-mono text-zinc-200">{formatCurrency(monthlyIncome)}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Category Summary */}
             {categoryBreakdown.length > 0 && (
-              <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-zinc-100">
-                <h3 className="text-lg font-bold font-display mb-6">Spending by Category</h3>
-                <div className="space-y-4">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-6 shadow-sm backdrop-blur-sm">
+                <h3 className="text-base font-bold font-display text-white mb-5">Spending by Category</h3>
+                <div className="space-y-3.5">
                   {categoryBreakdown.map((cat, idx) => (
                     <div key={idx}>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-sm font-semibold text-zinc-700">{cat.name}</span>
-                        <span className="text-sm font-bold text-zinc-900">{formatCurrency(cat.value)}</span>
+                      <div className="flex justify-between mb-1.5 text-xs">
+                        <span className="font-semibold text-zinc-300">{cat.name}</span>
+                        <span className="font-mono font-bold text-white">{formatCurrency(cat.value)}</span>
                       </div>
-                      <div className="w-full h-2 bg-zinc-100 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-primary"
-                          style={{width: `${(cat.value / totalExpense) * 100}%`}}
+                          className="h-full bg-white rounded-full transition-all"
+                          style={{width: `${(cat.value / (totalExpense || 1)) * 100}%`}}
                         />
                       </div>
                     </div>
@@ -290,7 +294,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           >
             <div ref={formRef}>
               <ExpenseForm 

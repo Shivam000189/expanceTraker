@@ -25,13 +25,13 @@ export function SettlementTimeline({ settlement }) {
   const currentIndex = timelineSteps.findIndex((step) => step.key === settlement?.status)
 
   return (
-    <div className="rounded-[2rem] border border-zinc-100 bg-white p-8 shadow-sm">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/80 p-6 shadow-sm backdrop-blur-sm">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-zinc-900">Settlement timeline</h2>
-        <p className="mt-2 text-sm text-zinc-500">Track how this payment moves from scan to deposit.</p>
+        <h2 className="text-xl font-bold text-white">Settlement timeline</h2>
+        <p className="mt-1 text-sm text-zinc-400">Track how this payment moves from scan to deposit.</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         {timelineSteps.map((step, index) => {
           const Icon = step.icon
           const isComplete = index <= currentIndex
@@ -44,27 +44,27 @@ export function SettlementTimeline({ settlement }) {
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
-                    'flex h-11 w-11 items-center justify-center rounded-full border text-sm font-bold transition-colors',
+                    'flex h-10 w-10 items-center justify-center rounded-xl border text-xs font-bold transition-colors',
                     isComplete
-                      ? 'border-emerald-500 bg-primary text-white'
-                      : 'border-zinc-200 bg-zinc-100 text-zinc-500'
+                      ? 'border-white bg-white text-black shadow-sm'
+                      : 'border-zinc-800 bg-zinc-950 text-zinc-500'
                   )}
                 >
                   {index + 1}
                 </div>
-                {index < timelineSteps.length - 1 && <div className="mt-2 h-14 w-px bg-zinc-200" />}
+                {index < timelineSteps.length - 1 && <div className="mt-2 h-12 w-px bg-zinc-800" />}
               </div>
 
-              <div className="flex-1 rounded-[1.5rem] border border-zinc-100 bg-zinc-50/70 p-4">
+              <div className="flex-1 rounded-xl border border-zinc-800/60 bg-zinc-950/60 p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <div className={cn('rounded-xl p-2', isComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-zinc-200 text-zinc-500')}>
-                        <Icon size={18} className={cn(step.key === 'processing' && isActive && 'animate-spin')} />
+                      <div className={cn('rounded-lg p-2', isComplete ? 'border border-white/10 bg-zinc-800 text-zinc-200' : 'border border-zinc-800 bg-zinc-900 text-zinc-500')}>
+                        <Icon size={16} className={cn(step.key === 'processing' && isActive && 'animate-spin')} />
                       </div>
                       <div>
-                        <p className="font-bold text-zinc-900">{step.label}</p>
-                        <p className="text-sm text-zinc-500">
+                        <p className="text-sm font-semibold text-white">{step.label}</p>
+                        <p className="text-xs text-zinc-400">
                           {isComplete && timestamp ? formatTimestamp(timestamp) : 'Pending'}
                         </p>
                       </div>
@@ -72,9 +72,8 @@ export function SettlementTimeline({ settlement }) {
                   </div>
 
                   {isActive && (
-                    <span className="mt-1 flex h-3 w-3">
-                      <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-primary opacity-60" />
-                      <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
+                    <span className="mt-1 flex h-2 w-2">
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
                     </span>
                   )}
                 </div>

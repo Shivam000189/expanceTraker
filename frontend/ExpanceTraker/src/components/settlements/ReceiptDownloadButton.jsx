@@ -33,7 +33,7 @@ export function ReceiptDownloadButton({ settlement }) {
   return (
     <button
       onClick={handleDownload}
-      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-sm font-bold text-zinc-800 shadow-sm transition-all hover:bg-zinc-50"
+      className="inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-950/80 px-4 py-2.5 text-sm font-semibold text-zinc-300 shadow-sm transition-all hover:border-zinc-700 hover:text-white active:scale-95"
     >
       <Download size={16} />
       Download Receipt

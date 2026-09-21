@@ -89,7 +89,7 @@ export function getBudgetThresholdStatus(spent = 0, limit = 0) {
   if (percentage >= 75) {
     return { status: 'warning', percentage, badgeColor: 'bg-amber-100 text-amber-700' };
   }
-  return { status: 'safe', percentage, badgeColor: 'bg-emerald-100 text-emerald-700' };
+  return { status: 'safe', percentage, badgeColor: 'border border-white/10 bg-white/5 text-zinc-300' };
 }
 
 export function generateExpensesCsv(expenses = []) {

@@ -49,25 +49,26 @@ export default function BulkPayout() {
   }
 
   return (
-    <Layout>
-      <div className="space-y-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <Layout contentClassName="px-4 py-4 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+      <div className="flex flex-col gap-4">
+        {/* Header Ribbon in Single Frame */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3 shadow-sm backdrop-blur-sm">
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              <Wallet size={14} />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-300">
+              <Wallet size={11} />
               Bulk Payout
             </div>
-            <h1 className="text-3xl font-bold font-display text-zinc-900">Upload, validate, and pay vendors in one batch</h1>
-            <p className="mt-2 max-w-2xl text-sm text-zinc-500">
-              Import a CSV, review account validation results, and execute bulk vendor payouts with a downloadable receipt.
-            </p>
+            <h1 className="text-lg font-bold font-display text-white tracking-tight mt-1">Batch Vendor Disbursement</h1>
+            <p className="text-[11px] text-zinc-400">Validate beneficiary accounts and execute batch payouts with receipt</p>
           </div>
 
-          <div className="rounded-[1.75rem] bg-surface-dark px-6 py-5 text-white shadow-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">Ready To Pay</p>
-            <div className="mt-3 flex items-center gap-3">
-              <Building2 size={18} className="text-primary" />
-              <span className="text-2xl font-bold">{formatCurrency(totalAmount)}</span>
+          <div className="flex items-center gap-3 rounded-xl border border-zinc-800/80 bg-zinc-950/80 px-4 py-2 self-start sm:self-auto">
+            <Building2 size={18} className="text-emerald-400" />
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Ready To Pay</p>
+              <p className="font-mono text-xl font-bold text-emerald-400">
+                {formatCurrency(totalAmount)}
+              </p>
             </div>
           </div>
         </div>

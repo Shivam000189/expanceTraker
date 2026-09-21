@@ -5,25 +5,26 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  
+
   --color-primary: #10B981;
   --color-primary-dark: #059669;
-  --color-surface-dark: #111827;
-  --color-background: #F9FAFB;
+  --color-surface-dark: #0d0f12;
+  --color-background: #0a0a0c;
 }
 
 @layer base {
   body {
-    @apply font-sans bg-background text-zinc-900 antialiased;
+    @apply font-sans bg-background text-white antialiased;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-semibold tracking-tight;
   }
 }
 
+/* Dark glassmorphism — used for the Spending Card and other frosted panels */
 .glass-morphism {
-  @apply bg-white/70 backdrop-blur-md border border-white/20;
+  @apply bg-white/[0.06] backdrop-blur-xl border border-white/10;
 }
 
 .sidebar-item-active {

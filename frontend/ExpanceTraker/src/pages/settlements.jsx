@@ -10,10 +10,10 @@ import { SettlementTimeline } from '../components/settlements/SettlementTimeline
 import { cn, formatCurrency } from '../lib/utils'
 
 const statusConfig = {
-  scanned: 'bg-zinc-100 text-zinc-600',
-  processing: 'bg-blue-100 text-blue-700',
-  cleared: 'bg-yellow-100 text-yellow-700',
-  deposited: 'bg-emerald-100 text-emerald-700',
+  scanned: 'border border-white/10 bg-zinc-800 text-zinc-300',
+  processing: 'border border-amber-500/20 bg-amber-500/10 text-amber-400',
+  cleared: 'border border-teal-500/20 bg-teal-500/10 text-teal-400',
+  deposited: 'border border-white/20 bg-white/10 text-white',
 }
 
 const statusLabel = {
@@ -66,84 +66,87 @@ export default function Settlements() {
   }
 
   return (
-    <Layout>
-      <div className="space-y-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <Layout contentClassName="px-4 py-4 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+      <div className="flex flex-col gap-4">
+        {/* Header Ribbon in Single Frame */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3 shadow-sm backdrop-blur-sm">
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              <ArrowRightLeft size={14} />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-300">
+              <ArrowRightLeft size={11} />
               Settlement Tracker
             </div>
-            <h1 className="text-3xl font-bold text-zinc-900">Track payout movement from scan to bank</h1>
-            <p className="mt-2 max-w-2xl text-sm text-zinc-500">
-              Monitor every settlement stage, review fee deductions, and download receipts for your records.
-            </p>
+            <h1 className="text-lg font-bold font-display text-white tracking-tight mt-1">Settlement Ledger & Timeline</h1>
+            <p className="text-[11px] text-zinc-400">Track movement from terminal scan to direct bank deposit</p>
           </div>
 
-          <div className="rounded-[1.5rem] border border-emerald-100 bg-white px-5 py-4 shadow-sm">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">Deposited Net Total</p>
-            <div className="mt-2 flex items-center gap-2 text-zinc-900">
-              <Landmark size={18} className="text-primary" />
-              <span className="text-2xl font-bold">{formatCurrency(depositedTotal)}</span>
+          <div className="flex items-center gap-3 rounded-xl border border-zinc-800/80 bg-zinc-950/80 px-4 py-2 self-start sm:self-auto">
+            <Landmark size={18} className="text-emerald-400" />
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Deposited Net Total</p>
+              <p className="font-mono text-xl font-bold text-emerald-400">
+                {formatCurrency(depositedTotal)}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.25fr_0.75fr]">
-          <div className="rounded-[2rem] border border-zinc-100 bg-white p-8 shadow-sm">
-            <div className="mb-8 flex items-center justify-between gap-4">
+        {/* 2-Column Single-Frame Bento Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+          {/* Left Column: Settlement Records (7 cols) with internal scroll */}
+          <div className="lg:col-span-7 rounded-2xl border border-zinc-800 bg-zinc-900/90 p-4 sm:p-5 shadow-sm backdrop-blur-sm flex flex-col">
+            <div className="mb-3 flex items-center justify-between gap-4 border-b border-zinc-800/80 pb-3">
               <div>
-                <h2 className="text-xl font-bold">Settlement Records</h2>
-                <p className="mt-2 text-sm text-zinc-500">Select a row to inspect the timeline and receipt details.</p>
+                <h2 className="text-sm font-bold text-white">Settlement Records</h2>
+                <p className="text-[11px] text-zinc-400">Select any record to inspect status and receipt</p>
               </div>
-              <span className="rounded-full bg-zinc-100 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
+              <span className="rounded-full border border-white/10 bg-zinc-800/80 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-zinc-400">
                 {settlements.length} records
               </span>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2.5 max-h-[calc(100vh-210px)] overflow-y-auto pr-1">
               {settlements.length > 0 ? (
                 settlements.map((settlement) => (
                   <button
                     key={settlement.id}
                     onClick={() => setSelectedSettlementId(settlement.id)}
                     className={cn(
-                      'flex w-full flex-col gap-4 rounded-[1.5rem] border p-5 text-left transition-all md:flex-row md:items-center md:justify-between',
+                      'flex w-full flex-col gap-2 rounded-xl border p-3.5 text-left transition-all sm:flex-row sm:items-center sm:justify-between',
                       selectedSettlement?.id === settlement.id
-                        ? 'border-emerald-200 bg-emerald-50/60 shadow-sm'
-                        : 'border-zinc-100 bg-white hover:border-zinc-200 hover:bg-zinc-50'
+                        ? 'border-white/40 bg-zinc-950/90 shadow-sm'
+                        : 'border-zinc-800/60 bg-zinc-950/60 hover:border-zinc-700/80 hover:bg-zinc-900/40'
                     )}
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-base font-bold text-zinc-900">{settlement.transactionId}</p>
-                      <p className="mt-1 text-sm text-zinc-500">
+                      <p className="truncate font-mono text-xs font-semibold text-white">{settlement.transactionId}</p>
+                      <p className="mt-0.5 text-[11px] text-zinc-400 font-mono">
                         {new Date(settlement.createdAt).toLocaleString('en-IN', {
                           day: 'numeric',
                           month: 'short',
-                          year: 'numeric',
                           hour: 'numeric',
                           minute: '2-digit',
                         })}
                       </p>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 md:justify-end">
-                      <span className={cn('rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em]', statusConfig[settlement.status] || statusConfig.scanned)}>
+                    <div className="flex items-center gap-2.5 shrink-0 sm:justify-end">
+                      <span className={cn('rounded px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider', statusConfig[settlement.status] || statusConfig.scanned)}>
                         {statusLabel[settlement.status] || settlement.status}
                       </span>
-                      <span className="text-lg font-bold text-zinc-900">{formatCurrency(settlement.amount)}</span>
+                      <span className="font-mono text-sm font-bold text-white">{formatCurrency(settlement.amount)}</span>
                     </div>
                   </button>
                 ))
               ) : (
-                <div className="rounded-[1.5rem] border border-dashed border-zinc-200 p-10 text-center text-sm font-medium text-zinc-500">
+                <div className="rounded-xl border border-dashed border-zinc-800 p-8 text-center text-xs font-medium text-zinc-500">
                   No settlements available yet.
                 </div>
               )}
             </div>
           </div>
 
-          <div className="space-y-8">
+          {/* Right Column: Selected Record Details & Timeline (5 cols) with internal scroll */}
+          <div className="lg:col-span-5 flex flex-col gap-3.5 max-h-[calc(100vh-210px)] overflow-y-auto pr-1">
             {selectedSettlement ? (
               <>
                 <FeeBreakdownCard
@@ -151,19 +154,22 @@ export default function Settlements() {
                   fee={Number(selectedSettlement.fee || 0)}
                   netAmount={Number(selectedSettlement.netAmount || 0)}
                 />
-                <div className="rounded-[2rem] border border-zinc-100 bg-white p-6 shadow-sm">
-                  <div className="mb-4">
-                    <p className="text-sm font-medium text-zinc-500">Selected transaction</p>
-                    <p className="mt-1 text-lg font-bold text-zinc-900">{selectedSettlement.transactionId}</p>
+                <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/80 p-4 shadow-sm backdrop-blur-sm flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">Selected transaction</p>
+                    <p className="mt-0.5 font-mono text-xs font-bold text-white truncate">{selectedSettlement.transactionId}</p>
                   </div>
                   <ReceiptDownloadButton settlement={selectedSettlement} />
                 </div>
+                <SettlementTimeline settlement={selectedSettlement} />
               </>
-            ) : null}
+            ) : (
+              <div className="rounded-2xl border border-dashed border-zinc-800 p-8 text-center text-xs text-zinc-500">
+                Select a settlement to view its fee breakdown and timeline.
+              </div>
+            )}
           </div>
         </div>
-
-        {selectedSettlement && <SettlementTimeline settlement={selectedSettlement} />}
       </div>
     </Layout>
   )

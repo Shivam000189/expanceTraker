@@ -42,17 +42,17 @@ export function EarningsToggle({ expenses = [] }) {
   const icon = showAmount ? IndianRupee : CreditCard
 
   return (
-    <div className="rounded-[2rem] border border-zinc-100 bg-white p-8 shadow-sm">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/80 p-6 shadow-sm backdrop-blur-sm">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-zinc-900">Daily earnings snapshot</h2>
-          <p className="mt-2 text-sm text-zinc-500">
+          <h2 className="text-xl font-bold text-white">Daily earnings snapshot</h2>
+          <p className="mt-1 text-sm text-zinc-400">
             Switch between rupee totals and transaction counts for the last two days.
           </p>
         </div>
 
-        <label className="inline-flex items-center gap-3 self-start md:self-center">
-          <span className="text-sm font-semibold text-zinc-600">
+        <label className="inline-flex cursor-pointer items-center gap-3 self-start md:self-center">
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
             {showAmount ? 'Showing amount' : 'Showing count'}
           </span>
           <span className="relative">
@@ -62,13 +62,13 @@ export function EarningsToggle({ expenses = [] }) {
               checked={showAmount}
               onChange={() => setShowAmount((current) => !current)}
             />
-            <span className="block h-8 w-14 rounded-full bg-zinc-200 transition-colors peer-checked:bg-primary" />
-            <span className="absolute left-1 top-1 h-6 w-6 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-6" />
+            <span className="block h-7 w-12 rounded-full bg-zinc-800 transition-colors peer-checked:bg-white" />
+            <span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-zinc-400 transition-transform peer-checked:translate-x-5 peer-checked:bg-black" />
           </span>
         </label>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-2">
         <StatCard
           title="Today's Total"
           value={displayValue(totals.today)}
@@ -81,9 +81,9 @@ export function EarningsToggle({ expenses = [] }) {
           title="Yesterday's Total"
           value={displayValue(totals.yesterday)}
           change={displayChange(totals.yesterday)}
-          trend="up"
+          trend="neutral"
           icon={icon}
-          color="blue"
+          color="neutral"
         />
       </div>
     </div>

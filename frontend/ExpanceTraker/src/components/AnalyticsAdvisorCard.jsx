@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Bot, Loader2, Send, Sparkles } from "lucide-react";
 import API from "../api";
+import { cn } from "../lib/utils";
 
 const starterMessage = {
   role: "assistant",
@@ -24,7 +25,7 @@ const formatResetTime = (value) => {
   });
 };
 
-export default function AnalyticsAdvisorCard() {
+export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[280px]" }) {
   const [messages, setMessages] = useState([starterMessage]);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -135,46 +136,40 @@ export default function AnalyticsAdvisorCard() {
   };
 
   return (
-    <div className="bg-white rounded-2xl lg:rounded-[2rem] p-5 lg:p-8 shadow-sm border border-zinc-100">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-6">
-        <div>
-          <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase border border-emerald-100 mb-3">
-            <Sparkles size={12} />
-            AI Advisor
+    <div className={cn("bg-zinc-900/90 rounded-2xl p-5 shadow-sm border border-zinc-800 backdrop-blur-sm flex flex-col justify-between", className)}>
+      <div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 bg-white/5 text-zinc-300 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/10 mb-2">
+              <Sparkles size={11} />
+              AI Advisor
+            </div>
+            <h3 className="text-base font-bold font-display text-white">
+              Financial Advisor
+            </h3>
+            <p className="text-[11px] text-zinc-400 mt-0.5">
+              Data-backed spending intelligence.
+            </p>
           </div>
-          <h3 className="text-lg lg:text-xl font-bold font-display text-zinc-900">
-            Ask about your own spending
-          </h3>
-          <p className="text-sm text-zinc-500 mt-1">
-            This advisor uses your saved Spendora expense data to answer with personal context.
-          </p>
+
+          <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-1.5 shrink-0">
+            <p className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">
+              Usage
+            </p>
+            {statusLoading ? (
+              <p className="text-[11px] text-zinc-500">Loading...</p>
+            ) : (
+              <p 
+                className="font-mono text-xs font-bold text-white"
+                title={nextResetLabel ? `Resets: ${nextResetLabel}` : undefined}
+              >
+                {quota.remaining}/{quota.limit}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 min-w-[220px]">
-          <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-zinc-500">
-            Chat Usage
-          </p>
-          {statusLoading ? (
-            <p className="mt-2 text-sm text-zinc-500">Loading limit...</p>
-          ) : (
-            <>
-              <p className="mt-2 text-lg font-bold text-zinc-900">
-                {quota.remaining} / {quota.limit} left
-              </p>
-              <p className="mt-1 text-xs text-zinc-500">
-                {hasReachedLimit && nextResetLabel
-                  ? `Next 10 chats: ${nextResetLabel}`
-                  : nextResetLabel
-                  ? `Window resets: ${nextResetLabel}`
-                  : "10 chats per 12 hours"}
-              </p>
-            </>
-          )}
-        </div>
-      </div>
-
-      <div className="h-[360px] overflow-y-auto rounded-[1.5rem] border border-zinc-100 bg-gradient-to-b from-emerald-50/50 via-white to-white p-4">
-        <div className="space-y-4">
+        <div className={cn("overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950/70 p-3.5 space-y-3", chatHeight)}>
           {messages.map((message, index) => (
             <div
               key={`${message.role}-${index}`}
@@ -183,16 +178,16 @@ export default function AnalyticsAdvisorCard() {
               }`}
             >
               <div
-                className={`max-w-[88%] rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+                className={`max-w-[88%] rounded-xl px-3.5 py-2 text-xs leading-relaxed shadow-sm ${
                   message.role === "user"
-                    ? "bg-zinc-900 text-white"
-                    : "bg-white text-zinc-700 border border-zinc-100"
+                    ? "bg-white text-black font-semibold"
+                    : "bg-zinc-900 text-zinc-200 border border-zinc-800"
                 }`}
               >
                 {message.role === "assistant" && (
-                  <div className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600">
-                    <Bot size={12} />
-                    Spendora Advisor
+                  <div className="mb-1 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-400">
+                    <Bot size={11} />
+                    Spendora AI
                   </div>
                 )}
                 {message.content}
@@ -202,9 +197,9 @@ export default function AnalyticsAdvisorCard() {
 
           {isSending && (
             <div className="flex justify-start">
-              <div className="inline-flex items-center gap-2 rounded-3xl border border-zinc-100 bg-white px-4 py-3 text-sm text-zinc-500 shadow-sm">
-                <Loader2 size={16} className="animate-spin" />
-                Thinking with your data...
+              <div className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-400 shadow-sm">
+                <Loader2 size={12} className="animate-spin text-zinc-300" />
+                Analyzing data...
               </div>
             </div>
           )}
@@ -213,8 +208,8 @@ export default function AnalyticsAdvisorCard() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-4">
-        <div className="flex items-end gap-3 rounded-[1.5rem] border border-zinc-200 bg-zinc-50 px-3 py-3">
+      <form onSubmit={handleSubmit} className="mt-3">
+        <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-1.5 focus-within:border-zinc-600">
           <textarea
             rows={1}
             value={input}
@@ -222,17 +217,19 @@ export default function AnalyticsAdvisorCard() {
             disabled={hasReachedLimit}
             placeholder={
               hasReachedLimit
-                ? `Your next 10 chats unlock on ${nextResetLabel || "the next reset time"}`
-                : "Ask about your top category, monthly spend, savings, or trends..."
+                ? nextResetLabel
+                  ? `Unlocks on ${nextResetLabel}`
+                  : "Chat limit reached."
+                : "Ask about habits, top category, tips..."
             }
-            className="max-h-28 min-h-[28px] flex-1 resize-none bg-transparent text-sm text-zinc-800 outline-none placeholder:text-zinc-400"
+            className="max-h-20 min-h-[22px] flex-1 resize-none bg-transparent text-xs text-zinc-200 outline-none placeholder:text-zinc-500 font-sans"
           />
           <button
             type="submit"
             disabled={isSending || !input.trim() || hasReachedLimit}
-            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-600 text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-300"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-600"
           >
-            <Send size={17} />
+            <Send size={12} />
           </button>
         </div>
       </form>

@@ -35,6 +35,8 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5174',
   'https://expance-traker.vercel.app'
 ];
 
