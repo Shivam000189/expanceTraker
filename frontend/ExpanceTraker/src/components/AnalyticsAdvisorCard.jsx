@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Bot, Loader2, Send, Sparkles } from "lucide-react";
+import { Bot, Loader2, Send } from "lucide-react";
 import API from "../api";
 import { cn } from "../lib/utils";
 
@@ -10,22 +10,19 @@ const starterMessage = {
 };
 
 const formatResetTime = (value) => {
-  if (!value) {
-    return "";
-  }
-
+  if (!value) return "";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return "";
-  }
-
+  if (Number.isNaN(date.getTime())) return "";
   return date.toLocaleString("en-IN", {
     dateStyle: "medium",
     timeStyle: "short",
   });
 };
 
-export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[280px]" }) {
+export default function AnalyticsAdvisorCard({
+  className = "",
+  chatHeight = "h-[280px]",
+}) {
   const [messages, setMessages] = useState([starterMessage]);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -58,77 +55,59 @@ export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[
     fetchQuota();
   }, []);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isSending]);
-
   const hasReachedLimit = quota.remaining <= 0;
   const nextResetLabel = useMemo(
     () => formatResetTime(quota.nextResetAt),
     [quota.nextResetAt]
   );
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isSending]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const trimmedInput = input.trim();
+    const prompt = input.trim();
+    if (!prompt || isSending || hasReachedLimit) return;
 
-    if (!trimmedInput || isSending || hasReachedLimit) {
-      return;
-    }
-
-    const userMessage = { role: "user", content: trimmedInput };
-    const nextMessages = [...messages, userMessage];
-
-    setMessages(nextMessages);
+    const userMessage = { role: "user", content: prompt };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsSending(true);
 
     try {
-      const { data } = await API.post("/auth/advisor-chat", {
-        message: trimmedInput,
-        history: nextMessages.slice(-8),
-      });
+      const { data } = await API.post("/auth/advisor-chat", { prompt });
+      const assistantText =
+        data?.reply ||
+        "I could not process that request. Please try again in a moment.";
 
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        {
-          role: "assistant",
-          content:
-            data?.reply ||
-            "I couldn't prepare a data-backed answer just now. Please try again.",
-        },
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantText },
       ]);
 
-      setQuota({
-        limit: Number(data?.limit || quota.limit),
-        used: Number(data?.used || quota.used),
-        remaining: Number(data?.remaining ?? quota.remaining),
-        nextResetAt: data?.nextResetAt || quota.nextResetAt,
-      });
-    } catch (error) {
-      console.error("Error sending analytics advisor message:", error);
-
-      if (error.response?.status === 429) {
-        const data = error.response.data || {};
+      if (data?.quota) {
         setQuota({
-          limit: Number(data?.limit || quota.limit),
-          used: Number(data?.used || quota.used),
-          remaining: Number(data?.remaining || 0),
-          nextResetAt: data?.nextResetAt || quota.nextResetAt,
+          limit: Number(data.quota.limit || quota.limit),
+          used: Number(data.quota.used || quota.used + 1),
+          remaining: Number(
+            data.quota.remaining ?? Math.max(0, quota.remaining - 1)
+          ),
+          nextResetAt: data.quota.nextResetAt || quota.nextResetAt,
         });
       }
-
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        {
-          role: "assistant",
-          content:
-            error.response?.status === 429
-              ? `You've used all 10 chats for this 12-hour window. Your next 10 chats unlock on ${formatResetTime(
-                  error.response?.data?.nextResetAt
-                )}.`
-              : "I hit a problem while preparing your answer. Please try again in a moment.",
-        },
+    } catch (error) {
+      console.error("Error asking advisor:", error);
+      const errorMsg =
+        error.response?.data?.message ||
+        "Failed to reach the advisor service. Please try again later.";
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: errorMsg },
       ]);
     } finally {
       setIsSending(false);
@@ -136,40 +115,45 @@ export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[
   };
 
   return (
-    <div className={cn("bg-zinc-900/90 rounded-2xl p-5 shadow-sm border border-zinc-800 backdrop-blur-sm flex flex-col justify-between", className)}>
+    <div
+      className={cn(
+        "rounded-[24px] border border-white/10 bg-[#131313] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col justify-between text-white",
+        className
+      )}
+    >
       <div>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 bg-white/5 text-zinc-300 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/10 mb-2">
-              <Sparkles size={11} />
-              AI Advisor
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/5">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0D2E18] text-[#10EE74] border border-[#10EE74]/20 shadow-sm">
+              <Bot size={16} />
             </div>
-            <h3 className="text-base font-bold font-display text-white">
-              Financial Advisor
-            </h3>
-            <p className="text-[11px] text-zinc-400 mt-0.5">
-              Data-backed spending intelligence.
-            </p>
+            <div>
+              <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight font-display">
+                Advisor Intelligence
+              </h3>
+              <p className="text-[11px] text-gray-400">
+                Personalized spending insights &amp; forecasts
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-1.5 shrink-0">
-            <p className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">
-              Usage
+          <div className="rounded-xl border border-white/10 bg-[#1C1C1C] px-2.5 py-1 text-right">
+            <p className="text-[9px] uppercase tracking-wider text-gray-400 font-mono">
+              Tokens
             </p>
-            {statusLoading ? (
-              <p className="text-[11px] text-zinc-500">Loading...</p>
-            ) : (
-              <p 
-                className="font-mono text-xs font-bold text-white"
-                title={nextResetLabel ? `Resets: ${nextResetLabel}` : undefined}
-              >
-                {quota.remaining}/{quota.limit}
-              </p>
-            )}
+            <p className="font-mono text-xs font-bold text-[#10EE74]">
+              {statusLoading ? "..." : `${quota.remaining}/${quota.limit}`}
+            </p>
           </div>
         </div>
 
-        <div className={cn("overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950/70 p-3.5 space-y-3", chatHeight)}>
+        {/* Chat message bubbles */}
+        <div
+          className={cn(
+            "overflow-y-auto rounded-2xl border border-white/5 bg-[#1C1C1C]/60 p-3 space-y-2.5",
+            chatHeight
+          )}
+        >
           {messages.map((message, index) => (
             <div
               key={`${message.role}-${index}`}
@@ -178,16 +162,16 @@ export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[
               }`}
             >
               <div
-                className={`max-w-[88%] rounded-xl px-3.5 py-2 text-xs leading-relaxed shadow-sm ${
+                className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-xs leading-relaxed shadow-sm ${
                   message.role === "user"
-                    ? "bg-white text-black font-semibold"
-                    : "bg-zinc-900 text-zinc-200 border border-zinc-800"
+                    ? "bg-[#10EE74] text-black font-medium"
+                    : "bg-[#222222] text-white border border-white/5"
                 }`}
               >
                 {message.role === "assistant" && (
-                  <div className="mb-1 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-400">
-                    <Bot size={11} />
-                    Spendora AI
+                  <div className="mb-1 flex items-center gap-1 text-[9px] font-semibold text-gray-400">
+                    <Bot size={11} className="text-[#10EE74]" />
+                    <span>Advisor</span>
                   </div>
                 )}
                 {message.content}
@@ -197,9 +181,9 @@ export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[
 
           {isSending && (
             <div className="flex justify-start">
-              <div className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-400 shadow-sm">
-                <Loader2 size={12} className="animate-spin text-zinc-300" />
-                Analyzing data...
+              <div className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-[#222222] px-3 py-1.5 text-xs text-gray-300">
+                <Loader2 size={12} className="animate-spin text-[#10EE74]" />
+                Thinking...
               </div>
             </div>
           )}
@@ -208,26 +192,25 @@ export default function AnalyticsAdvisorCard({ className = "", chatHeight = "h-[
         </div>
       </div>
 
+      {/* Input bar */}
       <form onSubmit={handleSubmit} className="mt-3">
-        <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-1.5 focus-within:border-zinc-600">
+        <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#373737] px-3.5 py-1.5 focus-within:border-[#10EE74] transition">
           <textarea
             rows={1}
             value={input}
-            onChange={(event) => setInput(event.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             disabled={hasReachedLimit}
             placeholder={
               hasReachedLimit
-                ? nextResetLabel
-                  ? `Unlocks on ${nextResetLabel}`
-                  : "Chat limit reached."
+                ? "Chat limit reached."
                 : "Ask about habits, top category, tips..."
             }
-            className="max-h-20 min-h-[22px] flex-1 resize-none bg-transparent text-xs text-zinc-200 outline-none placeholder:text-zinc-500 font-sans"
+            className="flex-1 resize-none bg-transparent text-xs text-white outline-none placeholder:text-gray-400 font-sans"
           />
           <button
             type="submit"
             disabled={isSending || !input.trim() || hasReachedLimit}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-black transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-600"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#10EE74] text-black hover:bg-[#10EE74]/90 disabled:opacity-30 disabled:cursor-not-allowed transition shadow-sm"
           >
             <Send size={12} />
           </button>

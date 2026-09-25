@@ -11,8 +11,7 @@ import {
   ArrowUpRight, 
   ArrowDownRight, 
   CreditCard, 
-  Plus, 
-  Sparkles,
+  Plus,
   Trash2,
   Edit2,
   X

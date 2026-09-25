@@ -1,27 +1,35 @@
-import { motion } from 'framer-motion'
-import { Navbar } from './Navbar'
-import { cn } from '../../lib/utils'
+import { useState } from "react";
+import { Navbar } from "./Navbar";
+import { Sidebar } from "./Sidebar";
+import { cn } from "../../lib/utils";
 
-export function Layout({ children, contentClassName }) {
+export function Layout({ children, contentClassName = "" }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-zinc-950 font-sans text-white selection:bg-white selection:text-black antialiased relative">
-      {/* Subtle top ambient glow for depth */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-full max-w-7xl -translate-x-1/2 rounded-full bg-gradient-to-b from-white/[0.03] via-white/[0.01] to-transparent blur-[120px]" />
-      <div className="radial-dot-grid pointer-events-none absolute inset-0 opacity-30" />
+    <main className="flex h-screen w-full overflow-hidden bg-black text-white selection:bg-[#10EE74] selection:text-black">
+      {/* Sleek Floating Sidebar */}
+      <Sidebar mobileOpen={mobileOpen} onCloseMobile={() => setMobileOpen(false)} />
 
-      <div className="relative z-10 flex min-h-screen flex-col min-w-0">
-        <Navbar />
-        <main className={cn("flex-1 px-4 py-8 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto", contentClassName)}>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="h-full"
-          >
+      {/* Main Content Area */}
+      <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
+        {/* Floating Pill Navbar */}
+        <Navbar onOpenMobile={() => setMobileOpen(true)} />
+
+        {/* Page Container: mobile scrolls naturally, desktop acts as clean single-frame */}
+        <div
+          className={cn(
+            "flex-1 min-h-0 min-w-0 p-3 sm:p-4 overflow-y-auto lg:overflow-hidden",
+            contentClassName
+          )}
+        >
+          <div className="w-full max-w-[1600px] mx-auto h-full min-h-0">
             {children}
-          </motion.div>
-        </main>
+          </div>
+        </div>
       </div>
-    </div>
-  )
+    </main>
+  );
 }
+
+export default Layout;

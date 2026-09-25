@@ -1,136 +1,183 @@
-import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  BarChart3, 
-  Settings, 
-  LogOut, 
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import {
   Wallet,
-  Menu,
-  X
-} from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '../../lib/utils'
+  Home,
+  TrendingUp,
+  Landmark,
+  DollarSign,
+  Users,
+  Store,
+  Settings,
+  LogOut,
+  X,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const sidebarItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', path: '/expenses' },
-  { icon: BarChart3, label: 'Analytics', path: '/analytics' },
-  { icon: Settings, label: 'Settings', path: '/setting' },
-]
+export const NAV_ITEMS = [
+  { href: "/dashboard", label: "Dashboard", icon: Home },
+  { href: "/analytics", label: "Analytics", icon: TrendingUp },
+  { href: "/bank", label: "Bank", icon: Landmark },
+  { href: "/settlements", label: "Settlements", icon: DollarSign },
+  { href: "/bulk-payout", label: "Bulk Payout", icon: Users },
+  { href: "/store-dashboard", label: "Store", icon: Store },
+  { href: "/setting", label: "Settings", icon: Settings },
+];
 
-export function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const navigate = useNavigate()
+export function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('userName')
-    localStorage.removeItem('userEmail')
-    localStorage.removeItem('monthlyIncome')
-    navigate('/login')
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("monthlyIncome");
+    navigate("/login");
+  };
 
-  return (
+  const navContent = (
     <>
-      <div className="lg:hidden fixed top-4 left-4 z-50">
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-2.5 bg-zinc-900 text-zinc-300 rounded-xl shadow-lg border border-zinc-800 hover:text-white"
+      {/* Brand Icon */}
+      <div className="flex items-center justify-center p-4">
+        <button
+          type="button"
+          onClick={() => navigate("/dashboard")}
+          aria-label="Dashboard Home"
+          title="Spendora"
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-colors group"
         >
-          {isOpen ? <X size={22} /> : <Menu size={22} />}
+          <Wallet className="h-6 w-6 text-[#10EE74] drop-shadow-[0_0_10px_rgba(16,238,116,0.65)] transition-transform group-hover:scale-110" />
         </button>
       </div>
 
-      <aside className="hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-zinc-950 border-r border-zinc-800/80 text-white p-6 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-10 px-2">
-          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
-            <Wallet className="text-black" size={22} />
+      {/* Nav List */}
+      <ul className="mt-8 flex flex-col items-center gap-2.5 flex-1 w-full px-2">
+        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          const isActive =
+            location.pathname === href ||
+            (href === "/dashboard" && location.pathname === "/expenses");
+
+          return (
+            <li key={href} className="relative group w-full flex justify-center">
+              <NavLink
+                to={href}
+                aria-label={label}
+                className={`relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-200 ${
+                  isActive
+                    ? "bg-white/10 text-[#10EE74] shadow-sm shadow-[#10EE74]/10"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                {isActive && (
+                  <span className="absolute -left-1 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full bg-[#10EE74] shadow-[0_0_8px_#10EE74]" />
+                )}
+              </NavLink>
+
+              {/* Tooltip on desktop */}
+              <div className="pointer-events-none absolute left-14 top-1/2 -translate-y-1/2 z-50 hidden md:block opacity-0 -translate-x-2 transition-all duration-150 group-hover:opacity-100 group-hover:translate-x-0">
+                <div className="rounded-lg border border-white/10 bg-[#131313] px-2.5 py-1 text-xs font-medium text-white shadow-xl whitespace-nowrap">
+                  {label}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Logout button */}
+      <div className="mt-auto p-3 flex justify-center w-full">
+        <button
+          type="button"
+          onClick={handleLogout}
+          aria-label="Log out"
+          title="Log out"
+          className="group relative flex h-11 w-11 items-center justify-center rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
+        >
+          <LogOut className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+          <div className="pointer-events-none absolute left-14 top-1/2 -translate-y-1/2 z-50 hidden md:block opacity-0 -translate-x-2 transition-all duration-150 group-hover:opacity-100 group-hover:translate-x-0">
+            <div className="rounded-lg border border-red-500/20 bg-[#131313] px-2.5 py-1 text-xs font-medium text-red-400 shadow-xl whitespace-nowrap">
+              Log out
+            </div>
           </div>
-          <span className="text-xl font-bold tracking-tight text-white">Spendora</span>
-        </div>
+        </button>
+      </div>
+    </>
+  );
 
-        <nav className="flex-1 space-y-2">
-          {sidebarItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) => cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 group hover:bg-white/5",
-                isActive 
-                  ? "border border-white/20 bg-white text-black shadow-sm font-bold" 
-                  : "text-zinc-400 hover:text-white"
-              )}
-            >
-              <item.icon size={18} className="transition-transform duration-200 group-hover:scale-110" />
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
-        </nav>
+  return (
+    <>
+      {/* Desktop Sidebar: 64px floating rounded column */}
+      <nav
+        aria-label="Main sidebar"
+        className="hidden md:flex h-[calc(100vh-2rem)] w-[64px] flex-col m-4 shrink-0 rounded-2xl bg-[#1C1C1C] border border-white/5 shadow-2xl z-30"
+      >
+        {navContent}
+      </nav>
 
-        <div className="pt-6 border-t border-zinc-800">
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 w-full text-left group"
-          >
-            <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
-
+      {/* Mobile Drawer */}
       <AnimatePresence>
-        {isOpen && (
+        {mobileOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-md z-40 lg:hidden"
+              onClick={onCloseMobile}
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm md:hidden"
             />
             <motion.aside
-              initial={{ x: '-100%' }}
+              initial={{ x: -280 }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-72 bg-zinc-950 border-r border-zinc-800 text-white p-6 z-50 lg:hidden"
+              exit={{ x: -280 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              className="fixed top-0 bottom-0 left-0 z-50 w-64 bg-[#1C1C1C] border-r border-white/10 p-5 flex flex-col md:hidden text-white shadow-2xl"
             >
-              <div className="flex items-center gap-3 mb-10 px-2">
-                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                  <Wallet className="text-black" size={22} />
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5">
+                    <Wallet className="h-5 w-5 text-[#10EE74]" />
+                  </div>
+                  <span className="font-semibold text-lg font-display text-white">Spendora</span>
                 </div>
-                <span className="text-xl font-bold tracking-tight text-white">Spendora</span>
+                <button
+                  onClick={onCloseMobile}
+                  className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5"
+                >
+                  <X size={20} />
+                </button>
               </div>
 
-              <nav className="space-y-2">
-                {sidebarItems.map((item) => (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setIsOpen(false)}
-                    className={({ isActive }) => cn(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200",
-                      isActive 
-                        ? "border border-white/20 bg-white text-black shadow-sm font-bold" 
-                        : "text-zinc-400 hover:bg-white/5 hover:text-white"
-                    )}
-                  >
-                    <item.icon size={18} />
-                    <span>{item.label}</span>
-                  </NavLink>
-                ))}
-              </nav>
+              <div className="mt-6 flex flex-col gap-1.5 flex-1">
+                {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+                  const isActive =
+                    location.pathname === href ||
+                    (href === "/dashboard" && location.pathname === "/expenses");
+                  return (
+                    <NavLink
+                      key={href}
+                      to={href}
+                      onClick={onCloseMobile}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-white/10 text-[#10EE74] font-semibold"
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{label}</span>
+                    </NavLink>
+                  );
+                })}
+              </div>
 
-              <div className="mt-auto pt-6 border-t border-zinc-800">
-                <button 
-                  onClick={() => {
-                    handleLogout()
-                    setIsOpen(false)
-                  }}
-                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-400 hover:text-red-400 hover:bg-red-500/10 w-full text-left"
+              <div className="pt-4 border-t border-white/10">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors"
                 >
-                  <LogOut size={18} />
-                  <span>Logout</span>
+                  <LogOut className="h-5 w-5" />
+                  <span>Log out</span>
                 </button>
               </div>
             </motion.aside>
@@ -138,5 +185,7 @@ export function Sidebar() {
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }
+
+export default Sidebar;

@@ -1,137 +1,147 @@
-import { useState } from 'react'
-import { Sparkles, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { formatCurrency } from '../../lib/utils'
-import API from '../../api'
+import { useState } from "react";
+import { FileText, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { formatCurrency } from "../../lib/utils";
+import API from "../../api";
 
-export function SMSDetector({ onDetect }) {
-  const [sms, setSms] = useState('')
-  const [isDetecting, setIsDetecting] = useState(false)
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState(null)
+export function SMSDetector({ onDetect, className = "" }) {
+  const [sms, setSms] = useState("");
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleDetect = async () => {
-    if (!sms.trim()) return
+    if (!sms.trim()) return;
 
-    setIsDetecting(true)
-    setError(null)
-    setResult(null)
+    setIsDetecting(true);
+    setError(null);
+    setResult(null);
 
     try {
-      const response = await API.post('/expenses/detect-sms', { smsText: sms })
-      setResult(response.data)
+      const response = await API.post("/expenses/detect-sms", { smsText: sms });
+      setResult(response.data);
     } catch (err) {
       setError(
         err.response?.data?.msg ||
-          'Could not parse SMS. Expected format: "Rs 450 debited from SBI for SWIGGY on 12 May"'
-      )
+          'Could not parse SMS. Example: "Rs 450 debited from SBI Bank for SWIGGY on 12 May"'
+      );
     } finally {
-      setIsDetecting(false)
+      setIsDetecting(false);
     }
-  }
+  };
 
   const handleUseResult = () => {
     if (result) {
-      onDetect(result)
-      setSms('')
-      setResult(null)
+      onDetect(result);
+      setSms("");
+      setResult(null);
     }
-  }
+  };
 
-  const EXAMPLE_SMS = 'Rs 450 debited from SBI Bank for SWIGGY on 12 May'
+  const EXAMPLE_SMS = "e.g. Rs 450 debited from SBI Bank for SWIGGY on 12 May";
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-6 shadow-sm flex flex-col h-full overflow-hidden backdrop-blur-sm">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="p-2.5 border border-white/10 bg-white/5 text-zinc-300 rounded-xl">
-          <Sparkles size={18} />
+    <div
+      className={`rounded-[24px] border border-white/10 bg-[#131313] p-4 lg:p-5 text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col justify-between overflow-hidden ${className}`}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-xl bg-[#0D2E18] text-[#10EE74] border border-[#10EE74]/20 flex items-center justify-center shrink-0">
+            <FileText size={14} />
+          </div>
+          <div>
+            <h3 className="text-xs sm:text-sm font-semibold text-white tracking-tight font-display">
+              Smart SMS Detector
+            </h3>
+            <p className="text-[10px] text-gray-400">Auto-parse bank SMS</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-lg font-bold font-display text-white">Smart SMS Detection</h2>
-          <p className="text-xs text-zinc-400">Paste bank SMS to auto-fill expense</p>
-        </div>
+
+        <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] font-mono text-[#10EE74]">
+          AI
+        </span>
       </div>
 
-      <div className="flex-1 space-y-4">
-        <div className="space-y-2">
+      <div className="space-y-2 flex-1 flex flex-col justify-between my-1">
+        {!result && (
           <textarea
             value={sms}
             onChange={(e) => setSms(e.target.value)}
             placeholder={EXAMPLE_SMS}
-            className="w-full h-28 p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl focus:ring-1 focus:ring-white/20 focus:border-zinc-500 outline-none transition resize-none text-xs leading-relaxed text-white placeholder-zinc-500 font-mono"
+            rows={2}
+            className="w-full p-2.5 bg-[#373737] border border-white/5 rounded-xl outline-none focus:border-[#10EE74] transition resize-none text-xs text-white placeholder-gray-400 font-mono leading-relaxed"
           />
-        </div>
+        )}
 
-        <button
-          onClick={handleDetect}
-          disabled={isDetecting || !sms.trim() || result !== null}
-          className="w-full bg-zinc-800 border border-white/10 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition active:scale-95 text-xs shadow-sm"
-        >
-          {isDetecting ? (
-            <>
-              <Loader2 className="animate-spin" size={16} />
-              Detecting...
-            </>
-          ) : result ? (
-            <>
-              <CheckCircle2 size={16} className="text-zinc-200" />
-              Detected! Ready to apply
-            </>
-          ) : (
-            'Detect Expense'
-          )}
-        </button>
+        {!result ? (
+          <button
+            onClick={handleDetect}
+            disabled={isDetecting || !sms.trim()}
+            className="w-full bg-white/10 hover:bg-white/15 border border-white/10 text-white font-medium py-2 rounded-full flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition text-xs shadow-sm cursor-pointer"
+          >
+            {isDetecting ? (
+              <>
+                <Loader2 className="animate-spin text-[#10EE74]" size={13} />
+                <span>Parsing SMS...</span>
+              </>
+            ) : (
+              <span>Detect Expense</span>
+            )}
+          </button>
+        ) : null}
 
         <AnimatePresence>
           {error && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
+              animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="p-3 bg-red-500/10 text-red-400 rounded-xl flex items-center gap-2.5 text-xs border border-red-500/20"
+              className="p-2 bg-red-500/10 text-red-400 rounded-xl flex items-center gap-1.5 text-[11px] border border-red-500/20"
             >
-              <AlertCircle size={16} className="shrink-0" />
+              <AlertCircle size={13} className="shrink-0" />
               <span>{error}</span>
             </motion.div>
           )}
 
           {result && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="space-y-3 pt-3 border-t border-zinc-800"
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 5 }}
+              className="space-y-2"
             >
-              <div className="space-y-2 bg-zinc-950 border border-zinc-800 p-3.5 rounded-xl">
-                <div>
-                  <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-0.5">Merchant</p>
-                  <p className="text-xs font-bold text-white">{result.merchant}</p>
+              <div className="p-2.5 bg-[#1C1C1C] border border-white/5 rounded-xl space-y-1 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-gray-400 font-mono">Merchant</span>
+                  <span className="font-semibold text-white truncate max-w-[120px]">
+                    {result.merchant}
+                  </span>
                 </div>
-                <div className="grid grid-cols-2 gap-3 pt-1">
-                  <div>
-                    <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-0.5">Amount</p>
-                    <p className="text-xs font-bold font-mono text-white">{formatCurrency(result.amount)}</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-0.5">Category</p>
-                    <p className="text-xs font-bold text-white">{result.category}</p>
-                  </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-gray-400 font-mono">Amount</span>
+                  <span className="font-bold font-mono text-[#10EE74]">
+                    {formatCurrency(result.amount)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-gray-400 font-mono">Category</span>
+                  <span className="text-gray-300">{result.category}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={handleUseResult}
-                  className="w-full bg-white text-black font-semibold py-2.5 rounded-xl hover:bg-zinc-200 transition shadow-sm active:scale-95 text-xs"
+                  className="w-full bg-[#10EE74] text-black font-semibold py-1.5 rounded-full hover:bg-[#10EE74]/90 transition text-xs shadow-md shadow-[#10EE74]/15 cursor-pointer"
                 >
                   Use Expense
                 </button>
                 <button
                   onClick={() => {
-                    setResult(null)
-                    setSms('')
+                    setResult(null);
+                    setSms("");
                   }}
-                  className="w-full bg-zinc-800 border border-white/10 text-zinc-300 font-semibold py-2.5 rounded-xl hover:bg-zinc-700 transition text-xs"
+                  className="w-full bg-white/5 border border-white/10 text-gray-300 font-medium py-1.5 rounded-full hover:bg-white/10 transition text-xs cursor-pointer"
                 >
                   Clear
                 </button>
@@ -141,5 +151,7 @@ export function SMSDetector({ onDetect }) {
         </AnimatePresence>
       </div>
     </div>
-  )
+  );
 }
+
+export default SMSDetector;
